@@ -14,7 +14,6 @@ public class Jason {
 
         while(!userInput.equalsIgnoreCase("bye")){
             userInput = sc.nextLine();
-            Task currentTask = new Task(userInput);
 
             if(userInput.equalsIgnoreCase("bye")){
                 System.out.println("─".repeat(50));
@@ -35,7 +34,7 @@ public class Jason {
 
                 System.out.println("─".repeat(50));
                 System.out.println("Nice! I've marked this task as done:");
-                System.out.println("  " + items[itemPosition].markDescription());
+                System.out.println("  " + items[itemPosition].mark().getDescription());
                 System.out.println("─".repeat(50));
 
             } else if(userInput.toLowerCase().startsWith("unmark")) {
@@ -44,16 +43,46 @@ public class Jason {
 
                 System.out.println("─".repeat(50));
                 System.out.println("OK, I've marked this task as not done yet:");
-                System.out.println("  " + items[itemPosition].unmarkDescription());
+                System.out.println("  " + items[itemPosition].unmark().getDescription());
                 System.out.println("─".repeat(50));
 
-            } else {
+            } else if (userInput.toLowerCase().startsWith("todo")) {
+                String target = userInput.substring(    5);
+                Todo todoTask = new Todo(target);
+
                 System.out.println("─".repeat(50));
-                System.out.println("added: " + userInput);
+                System.out.println("Got it. I've added this task:");
+                System.out.println(todoTask.getDescription());
+                System.out.printf("Now you have %d tasks in the list.\n", itemPointer + 1);
                 System.out.println("─".repeat(50));
-                items[itemPointer] = currentTask;
+                items[itemPointer] = todoTask;
+                itemPointer++;
+            } else if (userInput.toLowerCase().startsWith("event")) {
+                String target = userInput.substring(    6);
+                Event todoTask = new Event(target);
+
+                System.out.println("─".repeat(50));
+                System.out.println("Got it. I've added this task:");
+                System.out.println(todoTask.getDescription());
+                System.out.printf("Now you have %d tasks in the list.\n", itemPointer + 1);
+                System.out.println("─".repeat(50));
+                items[itemPointer] = todoTask;
+                itemPointer++;
+
+            } else if (userInput.toLowerCase().startsWith("deadline")) {
+                String target = userInput.substring(    9);
+                Deadline todoTask = new Deadline(target);
+
+                System.out.println("─".repeat(50));
+                System.out.println("Got it. I've added this task:");
+                System.out.println(todoTask.getDescription());
+                System.out.printf("Now you have %d tasks in the list.\n", itemPointer + 1);
+                System.out.println("─".repeat(50));
+                items[itemPointer] = todoTask;
                 itemPointer++;
             }
+
+
         }
         sc.close();
     }

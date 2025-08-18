@@ -1,6 +1,6 @@
 public class Task {
-    private String description;
-    private boolean isDone;
+    protected String description;
+    protected boolean isDone;
 
     public Task(String description) {
         this.description = description;
@@ -8,17 +8,17 @@ public class Task {
     }
 
     public String getDescription() {
-        return "[ ] " + description;
+         return (isDone ? "[X] " : "[ ] ") + description;
     }
 
-    public String markDescription() {
+    public Task mark() {
         isDone = true;
-        return "[X] " + description;
+        return this;
     }
 
-    public String unmarkDescription() {
+    public Task unmark() {
         isDone = false;
-        return "[ ] " + description;
+        return this;
     }
 
 }
