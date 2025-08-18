@@ -12,7 +12,8 @@ public class Jason {
         System.out.println("─".repeat(50));
         System.out.println(intro);
 
-        while(!userInput.equalsIgnoreCase("bye")){
+        //ensures that chatbot does not close until "bye" string is inputted by user
+        while(!userInput.equalsIgnoreCase("bye")){ 
             userInput = sc.nextLine();
 
             if(userInput.equalsIgnoreCase("bye")){
@@ -57,27 +58,39 @@ public class Jason {
                 System.out.println("─".repeat(50));
                 items[itemPointer] = todoTask;
                 itemPointer++;
+
             } else if (userInput.toLowerCase().startsWith("event")) {
-                String target = userInput.substring(    6);
-                Event todoTask = new Event(target);
+                String parts = userInput.substring(6).trim(); // after "event "
+                int fromIdx = parts.toLowerCase().indexOf("/from");
+                int toIdx = parts.toLowerCase().indexOf("/to", Math.max(fromIdx, 0) + 5);
+                String description = parts.substring(0, fromIdx).trim();
+                String from = parts.substring(fromIdx + 5, toIdx).trim(); // 5 = len("/from")
+                String to = parts.substring(toIdx + 3).trim();            // 3 = len("/to")
+
+                Event eventTask = new Event(description, from, to);
+
+              
 
                 System.out.println("─".repeat(50));
                 System.out.println("Got it. I've added this task:");
-                System.out.println(todoTask.getDescription());
+                System.out.println(eventTask.getDescription());
                 System.out.printf("Now you have %d tasks in the list.\n", itemPointer + 1);
                 System.out.println("─".repeat(50));
-                items[itemPointer] = todoTask;
+                items[itemPointer] = eventTask;
                 itemPointer++;
 
             } else if (userInput.toLowerCase().startsWith("deadline")) {
-                String target = userInput.substring(    9);
-                Deadline todoTask = new Deadline(target);
-
+                String[] parts = userInput.substring(9).split("/by", 2);
+                String description = parts[0].trim();
+                String by = parts[1].trim();
+                Task todoTask = new Deadline(description, by);
+    
                 System.out.println("─".repeat(50));
                 System.out.println("Got it. I've added this task:");
                 System.out.println(todoTask.getDescription());
                 System.out.printf("Now you have %d tasks in the list.\n", itemPointer + 1);
                 System.out.println("─".repeat(50));
+
                 items[itemPointer] = todoTask;
                 itemPointer++;
             }
