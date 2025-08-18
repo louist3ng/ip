@@ -5,13 +5,17 @@ public class Jason {
     private static Task[] items = new Task[100];
     private static int itemPointer = 0;
 
+    private static void intro() {
+        System.out.println("─".repeat(50));
+        System.out.println(intro);
+        System.out.println("─".repeat(50))
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String userInput = "";
 
-        System.out.println("─".repeat(50));
-        System.out.println(intro);
-
+        intro();
         //ensures that chatbot does not close until "bye" string is inputted by user
         while(!userInput.equalsIgnoreCase("bye")){ 
             userInput = sc.nextLine();
