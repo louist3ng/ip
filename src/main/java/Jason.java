@@ -11,6 +11,14 @@ public class Jason {
         System.out.println("─".repeat(50));
     }
 
+    public static void straightLine() {
+        System.out.println("─".repeat(50));
+    }
+
+    public static void taskMessage() {
+        System.out.println("Got it. I've added this task:");
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String userInput = "";
@@ -23,17 +31,17 @@ public class Jason {
 
             try {
                 if (userInput.equalsIgnoreCase("bye")) {
-                    System.out.println("─".repeat(50));
+                    straightLine();
                     System.out.println("Bye. Hope to see you again soon!");
-                    System.out.println("─".repeat(50));
+                    straightLine();
                     break;
 
                 } else if (userInput.toLowerCase().equalsIgnoreCase("list")) {
-                    System.out.println("─".repeat(50));
+                    straightLine();
                     for (int i = 0; i < itemPointer; i++) {
                         System.out.println((i + 1) + ". " + items[i].getDescription());
                     }
-                    System.out.println("─".repeat(50));
+                    straightLine();
 
                 } else if (userInput.toLowerCase().startsWith("mark")) {
                     if(userInput.length() == 4) {
@@ -48,10 +56,10 @@ public class Jason {
                         throw new OobIndexException();
                     }
 
-                    System.out.println("─".repeat(50));
+                    straightLine();
                     System.out.println("Nice! I've marked this task as done:");
                     System.out.println("  " + items[itemPosition].mark().getDescription());
-                    System.out.println("─".repeat(50));
+                    straightLine();
 
                 } else if (userInput.toLowerCase().startsWith("unmark")) {
                     if(userInput.length() == 5) {
@@ -66,10 +74,10 @@ public class Jason {
                         throw new OobIndexException();
                     }
 
-                    System.out.println("─".repeat(50));
+                    straightLine();
                     System.out.println("OK, I've marked this task as not done yet:");
                     System.out.println("  " + items[itemPosition].unmark().getDescription());
-                    System.out.println("─".repeat(50));
+                    straightLine();
 
                 } else if (userInput.toLowerCase().startsWith("todo")) {
                     if(userInput.length() == 4) {
@@ -80,11 +88,11 @@ public class Jason {
                             .replaceAll("\\s+", "");
                     Todo todoTask = new Todo(target);
 
-                    System.out.println("─".repeat(50));
-                    System.out.println("Got it. I've added this task:");
+                    straightLine();
+                    taskMessage();
                     System.out.println(todoTask.getDescription());
                     System.out.printf("Now you have %d tasks in the list.\n", itemPointer + 1);
-                    System.out.println("─".repeat(50));
+                    straightLine();
                     items[itemPointer] = todoTask;
                     itemPointer++;
 
@@ -102,11 +110,11 @@ public class Jason {
 
                     Event eventTask = new Event(description, from, to);
 
-                    System.out.println("─".repeat(50));
-                    System.out.println("Got it. I've added this task:");
+                    straightLine();
+                    taskMessage();
                     System.out.println(eventTask.getDescription());
                     System.out.printf("Now you have %d tasks in the list.\n", itemPointer + 1);
-                    System.out.println("─".repeat(50));
+                    straightLine();
                     items[itemPointer] = eventTask;
                     itemPointer++;
 
@@ -120,11 +128,11 @@ public class Jason {
                     String by = parts[1].trim();
                     Task todoTask = new Deadline(description, by);
 
-                    System.out.println("─".repeat(50));
-                    System.out.println("Got it. I've added this task:");
+                    straightLine();
+                    taskMessage();
                     System.out.println(todoTask.getDescription());
                     System.out.printf("Now you have %d tasks in the list.\n", itemPointer + 1);
-                    System.out.println("─".repeat(50));
+                    straightLine();
 
                     items[itemPointer] = todoTask;
                     itemPointer++;
