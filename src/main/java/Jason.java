@@ -1,11 +1,17 @@
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Jason {
     private static String intro = "Hello, my name is Jason";
     private static ArrayList<Task> items = new ArrayList<>();
-
     private static Storage storage = new Storage("data/jason.txt");
 
     private static void intro() {
@@ -16,7 +22,7 @@ public class Jason {
 
     private static void saveNow() {
         try {
-            storage.save(items); // ✅ save the list directly
+            storage.save(items); 
         } catch (IOException e) {
             System.err.println("[WARN] Failed to save tasks: " + e.getMessage());
         }
@@ -114,7 +120,7 @@ public class Jason {
 
                     System.out.println("─".repeat(50));
                     System.out.println("Got it. I've added this task:");
-                    System.out.println(todoTask.getDescription());
+                    System.out.println("  " + todoTask.getDescription());
                     System.out.printf("Now you have %d tasks in the list.\n", items.size() + 1);
                     System.out.println("─".repeat(50));
                     items.add(todoTask);
@@ -133,14 +139,20 @@ public class Jason {
                     int fromIdx = parts.toLowerCase().indexOf("/from");
                     int toIdx = parts.toLowerCase().indexOf("/to", Math.max(fromIdx, 0) + 5);
                     String description = parts.substring(0, fromIdx).trim();
-                    String from = parts.substring(fromIdx + 5, toIdx).trim(); // 5 = len("/from")
-                    String to = parts.substring(toIdx + 3).trim(); // 3 = len("/to")
+                    String fromStr = parts.substring(fromIdx + 5, toIdx).trim(); // 5 = len("/from")
+                    String toStr = parts.substring(toIdx + 3).trim(); // 3 = len("/to")
+
+                    LocalDateTime from = DateTimeUtil.parseDayMonthYearWithTime(fromStr, DateTimeUtil.PREFER_DMY);
+                    LocalDateTime to = LocalDateTime.of(from.toLocalDate(), DateTimeUtil.parseTimeHm(toStr));
+
+                    if (to.isBefore(from)) {
+                        to = to.plusDays(1);
+                    }
 
                     Event eventTask = new Event(description, from, to);
-
                     System.out.println("─".repeat(50));
                     System.out.println("Got it. I've added this task:");
-                    System.out.println(eventTask.getDescription());
+                    System.out.println("  " + eventTask.getDescription());
                     System.out.printf("Now you have %d tasks in the list.\n", items.size());
                     System.out.println("─".repeat(50));
                     items.add(eventTask);
@@ -158,11 +170,12 @@ public class Jason {
                     String[] parts = userInput.substring(9).split("/by", 2);
                     String description = parts[0].trim();
                     String by = parts[1].trim();
-                    Task deadlineTask = new Deadline(description, by);
+                    LocalDateTime byDateTime = DateTimeUtil.parseIsoDateOrDateTime(by);
+                    Task deadlineTask = new Deadline(description, byDateTime);
 
                     System.out.println("─".repeat(50));
                     System.out.println("Got it. I've added this task:");
-                    System.out.println(deadlineTask.getDescription());
+                    System.out.println("  " + deadlineTask.getDescription());
                     System.out.printf("Now you have %d tasks in the list.\n", items.size() + 1);
                     System.out.println("─".repeat(50));
 

@@ -1,8 +1,10 @@
-public class Event extends Task {
-    protected String from;
-    protected String to;
+import java.time.LocalDateTime;
 
-    public Event(String description, String from, String to) {
+public class Event extends Task {
+    protected LocalDateTime from;
+    protected LocalDateTime to;
+
+    public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
         this.from = from;
         this.to = to;
@@ -16,10 +18,10 @@ public class Event extends Task {
 
     @Override
     public String toFileString() {
-        // File format wants ONE extra field (e.g., "Aug 6th 2-4pm").
-        // We'll combine from/to into a single human string when saving.
-        String when = (to == null || to.isEmpty()) ? from : (from + " " + to);
-        return "E | " + (isDone ? "1" : "0") + " | " + esc(description) + " | " + esc(when);
+        // E | 0 | description | 2019-12-02T18:00 | 2019-12-02T20:00
+        return "E | " + (isDone ? "1" : "0") + " | " + esc(description)
+                + " | " + esc(DateTimeUtil.formatIsoWithSpace(from))
+                + " | " + esc(DateTimeUtil.formatIsoWithSpace(to));
     }
 
 
