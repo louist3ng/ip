@@ -30,7 +30,7 @@ public class Storage {
         }
         for (String line : Files.readAllLines(file)) {
             if (!line.trim().isEmpty()) {
-                tasks.add(Task.fromFileString(line));
+                tasks.add(Parser.fromStorageString(line));
             }
         }
         return tasks;
@@ -42,7 +42,7 @@ public class Storage {
         Path tmp = file.resolveSibling(file.getFileName() + ".tmp");
         try (BufferedWriter bw = Files.newBufferedWriter(tmp)) {
             for (Task t : tasks) {
-                bw.write(t.toFileString());
+                bw.write(t.toStorageString());
                 bw.newLine();
             }
         }

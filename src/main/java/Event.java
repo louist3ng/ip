@@ -17,11 +17,11 @@ public class Event extends Task {
     }
 
     @Override
-    public String toFileString() {
+    public String toStorageString() {
         // E | 0 | description | 2019-12-02T18:00 | 2019-12-02T20:00
-        return "E | " + (isDone ? "1" : "0") + " | " + esc(description)
-                + " | " + esc(DateTimeUtil.formatIsoWithSpace(from))
-                + " | " + esc(DateTimeUtil.formatIsoWithSpace(to));
+        return "E | " + (isDone ? "1" : "0") + " | " + description
+                + " | " + DateTimeUtil.formatIsoWithSpace(from)
+                + " | " + DateTimeUtil.formatIsoWithSpace(to);
     }
 
 

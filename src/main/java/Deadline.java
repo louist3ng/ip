@@ -14,9 +14,9 @@ public class Deadline extends Task {
     }
 
     @Override
-    public String toFileString() {
+    public String toStorageString() {
         // D | 0 | description | by
-        return "D | " + (isDone ? "1" : "0") + " | " + esc(description) + " | " + esc(DateTimeUtil.formatIsoWithSpace(time));
+        return "D | " + (isDone ? "1" : "0") + " | " + description + " | " + DateTimeUtil.formatIsoWithSpace(time);
     }
 
    
