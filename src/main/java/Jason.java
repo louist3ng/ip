@@ -1,11 +1,12 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 
 public class Jason {
     private static String intro = "Hello, my name is Jason";
     private static ArrayList<Task> items = new ArrayList<>();
-    private static int itemPointer = 0;
+
+    private static Storage storage = new Storage("data/jason.txt");
 
     private static void intro() {
         System.out.println("─".repeat(50));
@@ -13,9 +14,27 @@ public class Jason {
         System.out.println("─".repeat(50));
     }
 
+    private static void saveNow() {
+        try {
+            storage.save(items); // ✅ save the list directly
+        } catch (IOException e) {
+            System.err.println("[WARN] Failed to save tasks: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String userInput = "";
+
+        try {
+            ArrayList<Task> loaded = storage.load();
+            items.addAll(loaded);
+            if (!loaded.isEmpty()) {
+                System.out.printf("[Loaded %d tasks from disk]%n", items.size());
+            }
+        } catch (IOException e) {
+            System.err.println("[WARN] Could not load tasks: " + e.getMessage());
+        }
 
         intro();
         // ensures that chatbot does not close until "bye" string is inputted by user
@@ -32,21 +51,25 @@ public class Jason {
 
                 } else if (userInput.toLowerCase().equalsIgnoreCase("list")) {
                     System.out.println("─".repeat(50));
-                    for (int i = 0; i < itemPointer; i++) {
+                    for (int i = 0; i < items.size(); i++) {
                         System.out.println((i + 1) + ". " + items.get(i).getDescription());
                     }
                     System.out.println("─".repeat(50));
 
                 } else if (userInput.toLowerCase().startsWith("mark")) {
-                    if (userInput.length() == 4) {
+                    if (userInput.equalsIgnoreCase("mark")) {
                         throw new EmptyException();
+                    }
+
+                    if (!userInput.toLowerCase().startsWith("mark ")) {
+                        throw new IncorrectInputException();
                     }
 
                     String target = userInput.substring(4)
                             .replaceAll("\\s+", "");
                     int itemPosition = Integer.parseInt(target) - 1;
 
-                    if (itemPosition >= itemPointer || itemPosition < 0) {
+                    if (itemPosition >= items.size() || itemPosition < 0) {
                         throw new OobIndexException();
                     }
 
@@ -56,15 +79,19 @@ public class Jason {
                     System.out.println("─".repeat(50));
 
                 } else if (userInput.toLowerCase().startsWith("unmark")) {
-                    if (userInput.length() == 5) {
+                    if (userInput.equalsIgnoreCase("unmark")) {
                         throw new EmptyException();
+                    }
+
+                    if (!userInput.toLowerCase().startsWith("unmark ")) {
+                        throw new IncorrectInputException(); // catches "unmarks"
                     }
 
                     String target = userInput.substring(6)
                             .replaceAll("\\s+", "");
                     int itemPosition = Integer.parseInt(target) - 1;
 
-                    if (itemPosition >= itemPointer || itemPosition < 0) {
+                    if (itemPosition >= items.size() || itemPosition < 0) {
                         throw new OobIndexException();
                     }
 
@@ -78,20 +105,28 @@ public class Jason {
                         throw new EmptyException();
                     }
 
+                    if (!userInput.toLowerCase().startsWith("todo ")) {
+                        throw new IncorrectInputException(); // catches "todos"
+                    }
+
                     String target = userInput.substring(5);
                     Todo todoTask = new Todo(target);
 
                     System.out.println("─".repeat(50));
                     System.out.println("Got it. I've added this task:");
                     System.out.println(todoTask.getDescription());
-                    System.out.printf("Now you have %d tasks in the list.\n", itemPointer + 1);
+                    System.out.printf("Now you have %d tasks in the list.\n", items.size() + 1);
                     System.out.println("─".repeat(50));
-                    items.add(itemPointer, todoTask);
-                    itemPointer++;
+                    items.add(todoTask);
+                    saveNow();
 
                 } else if (userInput.toLowerCase().startsWith("event")) {
                     if (userInput.length() == 5) {
                         throw new EmptyException();
+                    }
+
+                    if (!userInput.toLowerCase().startsWith("event ")) {
+                        throw new IncorrectInputException(); // catches "unmarks"
                     }
 
                     String parts = userInput.substring(6).trim(); // after "event "
@@ -106,14 +141,18 @@ public class Jason {
                     System.out.println("─".repeat(50));
                     System.out.println("Got it. I've added this task:");
                     System.out.println(eventTask.getDescription());
-                    System.out.printf("Now you have %d tasks in the list.\n", itemPointer + 1);
+                    System.out.printf("Now you have %d tasks in the list.\n", items.size());
                     System.out.println("─".repeat(50));
-                    items.add(itemPointer, eventTask);
-                    itemPointer++;
+                    items.add(eventTask);
+                    saveNow();
 
                 } else if (userInput.toLowerCase().startsWith("deadline")) {
                     if (userInput.length() == 8) {
                         throw new EmptyException();
+                    }
+
+                    if (!userInput.toLowerCase().startsWith("deadline ")) {
+                        throw new IncorrectInputException(); // catches "unmarks"
                     }
 
                     String[] parts = userInput.substring(9).split("/by", 2);
@@ -124,21 +163,26 @@ public class Jason {
                     System.out.println("─".repeat(50));
                     System.out.println("Got it. I've added this task:");
                     System.out.println(deadlineTask.getDescription());
-                    System.out.printf("Now you have %d tasks in the list.\n", itemPointer + 1);
+                    System.out.printf("Now you have %d tasks in the list.\n", items.size() + 1);
                     System.out.println("─".repeat(50));
 
-                    items.add(itemPointer, deadlineTask);
-                    itemPointer++;
+                    items.add(deadlineTask);
+                    saveNow();
+
                 } else if (userInput.toLowerCase().startsWith("delete")) {
                     if (userInput.length() == 6) {
                         throw new EmptyException();
+                    }
+
+                    if (!userInput.toLowerCase().startsWith("delete ")) {
+                        throw new IncorrectInputException(); // catches "deletes"
                     }
 
                     String target = userInput.substring(6)
                             .replaceAll("\\s+", "");
                     int itemPosition = Integer.parseInt(target) - 1;
 
-                    if (itemPosition >= itemPointer || itemPosition < 0) {
+                    if (itemPosition >= items.size() || itemPosition < 0) {
                         throw new OobIndexException();
                     }
 
@@ -146,21 +190,19 @@ public class Jason {
                     System.out.println("Noted. I've removed this task:");
                     System.out.println("  " + items.get(itemPosition).getDescription());
                     items.remove(itemPosition);
-                    itemPointer--;
-                    System.out.printf("Now you have %d tasks in the list.\n", itemPointer);
+                    System.out.printf("Now you have %d tasks in the list.\n", items.size());
                     System.out.println("─".repeat(50));
+                    saveNow();
 
                 } else {
                     throw new IncorrectInputException();
                 }
-            } catch (EmptyException e) {
-                System.out.println(e);
-            } catch (OobIndexException e) {
-                System.out.println(e);
-            } catch (IncorrectInputException e) {
-                System.out.println(e);
-            }
 
+            } catch (EmptyException | OobIndexException | IncorrectInputException e) {
+                System.out.println(e);
+            } catch (NumberFormatException e) {
+                System.out.println("☹ OOPS!!! The task number should be an integer.");
+            }
         }
         sc.close();
     }

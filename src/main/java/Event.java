@@ -14,5 +14,13 @@ public class Event extends Task {
             + description + " (from: " + from + " to: " + to + ")";
     }
 
+    @Override
+    public String toFileString() {
+        // File format wants ONE extra field (e.g., "Aug 6th 2-4pm").
+        // We'll combine from/to into a single human string when saving.
+        String when = (to == null || to.isEmpty()) ? from : (from + " " + to);
+        return "E | " + (isDone ? "1" : "0") + " | " + esc(description) + " | " + esc(when);
+    }
+
 
 }
