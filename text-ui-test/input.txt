@@ -1,8 +1,35 @@
-todo borrow book
-deadline return book /by Sunday
-event project meeting /from Mon 2pm /to 4pm
-mark 2
-delete 3
+list ss
+todo buy | milk
 list
-delete 99
+bye now
+list extra
+todo
+todo   
+todos buy milk
+todo buy milk
+todo    ddd
+deadline
+deadline submit report
+deadline submit /by   
+deadline submit /by 2025-09-01 18:00
+deadline submit /by 2025-09-01
+deadline submit /by 2025-13-01 10:00
+deadline submit /by 24:00
+event
+event meeting /from 2 Sep 2025 14:00 /to 2 Sep 2025 16:00
+event night shift /from 2 Sep 2025 23:30 /to 02:00
+event meeting /to 16:00 /from 14:00
+event /from 14:00 /to 16:00
+event meeting /from   /to 16:00
+event meeting /from 14:00 /to   
+mark
+mark a
+mark 0
+mark 999
+mark 1
+unmark 1
+delete
+delete a
+delete 999
+delete 1
 bye
