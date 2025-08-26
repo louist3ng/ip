@@ -1,4 +1,4 @@
-
+package jason.model;
 
 public abstract class Task {
     protected String description;

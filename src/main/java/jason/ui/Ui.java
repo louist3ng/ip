@@ -1,3 +1,6 @@
+package jason.ui;
+
+import jason.model.Task;
 import java.util.List;
 import java.util.Scanner;
 

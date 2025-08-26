@@ -1,3 +1,7 @@
+package jason.storage;
+
+import jason.model.Task;
+import jason.parser.Parser;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;

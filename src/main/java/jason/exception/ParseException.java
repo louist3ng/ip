@@ -1,4 +1,5 @@
-/** Thrown when user input or storage lines cannot be parsed. */
+package jason.exception;
+
 public class ParseException extends ParentException {
     public ParseException(String message) {
         super(message);
