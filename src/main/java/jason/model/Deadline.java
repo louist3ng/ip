@@ -1,7 +1,8 @@
 package jason.model;
 
-import jason.parser.DateTimeUtil;
 import java.time.LocalDateTime;
+
+import jason.parser.DateTimeUtil;
 
 public class Deadline extends Task {
     protected LocalDateTime time;
@@ -9,6 +10,10 @@ public class Deadline extends Task {
     public Deadline(String description, LocalDateTime time) {
         super(description);
         this.time = time;
+    }
+    
+    public LocalDateTime getTime() {
+        return time;
     }
 
     @Override

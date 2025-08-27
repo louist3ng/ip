@@ -23,6 +23,10 @@ public abstract class Task {
         return this;
     }
 
+    public boolean isDone() {
+        return isDone;
+    }
+
     public abstract String toStorageString();
 
 }

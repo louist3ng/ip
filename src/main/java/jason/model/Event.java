@@ -1,7 +1,8 @@
 package jason.model;
 
-import jason.parser.DateTimeUtil;
 import java.time.LocalDateTime;
+
+import jason.parser.DateTimeUtil;
 
 public class Event extends Task {
     protected LocalDateTime from;
@@ -11,6 +12,14 @@ public class Event extends Task {
         super(description);
         this.from = from;
         this.to = to;
+    }
+
+    public LocalDateTime getFrom() {
+        return from;
+    }
+
+    public LocalDateTime getTo() {
+        return to;
     }
 
     @Override
