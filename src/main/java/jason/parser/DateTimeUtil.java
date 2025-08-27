@@ -34,19 +34,21 @@ public final class DateTimeUtil {
     // /from dd/MM/yy HH:mm or MM/dd/yy HH:mm
     public static LocalDateTime parseDayMonthYearWithTime(String input, boolean preferDmy) {
         String s = input.trim();
-        String[] parts = s.split("\s+", 2);
-        if (parts.length != 2)
+        String[] parts = s.split("\\s+", 2);
+        if (parts.length != 2) {
             throw new DateTimeParseException("Expected date time", s, 0);
+        }
 
         String[] dateParts = parts[0].split("[/-]");
-        if (dateParts.length != 3)
+        if (dateParts.length != 3) {
             throw new DateTimeParseException("Expected dd/MM/yy or MM/dd/yy", s, 0);
-
+        }
         int a = Integer.parseInt(dateParts[0]);
         int b = Integer.parseInt(dateParts[1]);
         int year = Integer.parseInt(dateParts[2]);
-        if (year < 100)
+        if (year < 100) {
             year += 2000; // normalize two‑digit years
+        }
 
         int day, month;
         if (a > 12 && b <= 12) {

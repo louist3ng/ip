@@ -1,8 +1,24 @@
 plugins {
     id 'java'
     id 'application'
+    id 'checkstyle'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
+
+checkstyle {
+    toolVersion = '10.18.1'
+    // Point to the local file (no inline/URI temp resource)
+    config = resources.text.fromFile('config/checkstyle/checkstyle.xml')
+}
+
+tasks.withType(Checkstyle).configureEach {
+    // Prevent classpath issues (you’re not using custom checks)
+    classpath = files()
+    // Optional while you clean up:
+    // ignoreFailures = true
+    reports { html.required = true; xml.required = false }
+}
+
 
 repositories {
     mavenCentral()
@@ -28,11 +44,11 @@ test {
 }
 
 application {
-    mainClass.set("seedu.duke.Duke")
+    mainClass.set("jason.app.Jason")
 }
 
 shadowJar {
-    archiveBaseName = "duke"
+    archiveBaseName = "jason"
     archiveClassifier = null
 }
 

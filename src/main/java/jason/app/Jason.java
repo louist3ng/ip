@@ -60,22 +60,24 @@ public class Jason {
                     ui.showList(tasks.asArrayList());
 
                 } else if (cmd.equals("todo")) {
-                    if (contents.isEmpty())
+                    if (contents.isEmpty()) {
                         throw new EmptyException();
+                    }
                     Todo t = new Todo(contents);
                     tasks.add(t);
                     ui.showAdd(t, tasks.size());
                     saveNow();
 
                 } else if (cmd.equals("deadline")) {
-                    if (contents.isEmpty() || !contents.toLowerCase().contains("/by"))
+                    if (contents.isEmpty() || !contents.toLowerCase().contains("/by")) {
                         throw new IncorrectInputException();
+                    }
                     String[] parts = contents.split("/by", 2);
                     String desc = parts[0].trim();
                     String byStr = parts.length > 1 ? parts[1].trim() : "";
-                    if (desc.isEmpty() || byStr.isEmpty())
+                    if (desc.isEmpty() || byStr.isEmpty()) {
                         throw new EmptyException();
-
+                    } 
                     LocalDateTime by = DateTimeUtil.parseIsoDateOrDateTime(byStr);
                     Deadline d = new Deadline(desc, by);
                     tasks.add(d);
@@ -83,56 +85,63 @@ public class Jason {
                     saveNow();
 
                 } else if (cmd.equals("event")) {
-                    if (contents.isEmpty())
+                    if (contents.isEmpty()) { 
                         throw new EmptyException();
+                    }
                     String lower = contents.toLowerCase();
                     int fromIdx = lower.indexOf("/from");
                     int toIdx = lower.indexOf("/to", Math.max(fromIdx, 0) + 5);
-                    if (fromIdx < 0 || toIdx < 0)
+                    if (fromIdx < 0 || toIdx < 0) {
                         throw new IncorrectInputException();
-
+                    }
                     String desc = contents.substring(0, fromIdx).trim();
                     String fromS = contents.substring(fromIdx + 5, toIdx).trim(); // "/from"
                     String toS = contents.substring(toIdx + 3).trim(); // "/to"
-                    if (desc.isEmpty() || fromS.isEmpty() || toS.isEmpty())
+                    if (desc.isEmpty() || fromS.isEmpty() || toS.isEmpty()) {
                         throw new EmptyException();
-
+                    }
                     LocalDateTime from = DateTimeUtil.parseDayMonthYearWithTime(fromS, DateTimeUtil.PREFER_DMY);
                     LocalDateTime to = LocalDateTime.of(from.toLocalDate(), DateTimeUtil.parseTimeHm(toS));
-                    if (to.isBefore(from))
+                    if (to.isBefore(from)) {
                         to = to.plusDays(1);
-
+                    }
                     Event ev = new Event(desc, from, to);
                     tasks.add(ev);
                     ui.showAdd(ev, tasks.size());
                     saveNow();
 
                 } else if (cmd.equals("mark")) {
-                    if (contents.isEmpty())
+                    if (contents.isEmpty()) {
                         throw new EmptyException();
+                    }
                     int idx = Integer.parseInt(contents.replaceAll("\\s+", "")) - 1;
-                    if (idx < 0 || idx >= tasks.size())
+                    if (idx < 0 || idx >= tasks.size()) {
                         throw new OobIndexException();
+                    }
                     tasks.mark(idx);
                     ui.showMark(tasks.get(idx));
                     saveNow();
 
                 } else if (cmd.equals("unmark")) {
-                    if (contents.isEmpty())
+                    if (contents.isEmpty()) {
                         throw new EmptyException();
+                    }
                     int idx = Integer.parseInt(contents.replaceAll("\\s+", "")) - 1;
-                    if (idx < 0 || idx >= tasks.size())
+                    if (idx < 0 || idx >= tasks.size()) {
                         throw new OobIndexException();
+                    }
                     tasks.unmark(idx);
                     ui.showUnmark(tasks.get(idx));
                     saveNow();
 
                 } else if (cmd.equals("delete")) {
-                    if (contents.isEmpty())
+                    if (contents.isEmpty()) {
                         throw new EmptyException();
+                    }
                     int idx = Integer.parseInt(contents.replaceAll("\\s+", "")) - 1;
-                    if (idx < 0 || idx >= tasks.size())
+                    if (idx < 0 || idx >= tasks.size()) {
                         throw new OobIndexException();
+                    }
                     Task removed = tasks.removeAt(idx);
                     ui.showDelete(removed, tasks.size());
                     saveNow();

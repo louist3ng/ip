@@ -20,11 +20,6 @@ public class Parser {
         return (sp == -1 ? "" : trimmed.substring(sp + 1).trim());
     }
 
-
-
-
-    
-
     // To extract the tasks from already stored text
     public static Task fromStorageString(String line) {
         String[] p = line.split("\\|");
@@ -39,10 +34,11 @@ public class Parser {
         switch (type) {
             case "T" -> {
                 Todo t = new Todo(desc);
-                if (done)
+                if (done) {
                     t.mark();
-                else
+                } else {
                     t.unmark();
+                }
                 return t;
             }
             case "D" -> {
@@ -51,10 +47,11 @@ public class Parser {
                 }
                 LocalDateTime by = DateTimeUtil.parseIsoDateOrDateTime(p[3]);
                 var d = new Deadline(desc, by);
-                if (done)
+                if (done) {
                     d.mark();
-                else
+                } else {
                     d.unmark();
+                }
                 return d;
             }
             case "E" -> {
@@ -64,10 +61,11 @@ public class Parser {
                 LocalDateTime from = DateTimeUtil.parseIsoDateOrDateTime(p[3]);
                 LocalDateTime to = DateTimeUtil.parseIsoDateOrDateTime(p[4]);
                 var e = new Event(desc, from, to);
-                if (done)
+                if (done) {
                     e.mark();
-                else
+                } else {
                     e.unmark();
+                }
                 return e;
             }
             default -> throw new ParseException("Unknown type: " + type);
