@@ -1,5 +1,9 @@
 package jason.app;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import jason.exception.EmptyException;
 import jason.exception.IncorrectInputException;
 import jason.exception.OobIndexException;
@@ -12,9 +16,6 @@ import jason.parser.DateTimeUtil;
 import jason.parser.Parser;
 import jason.storage.Storage;
 import jason.ui.Ui;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class Jason {
     private final Ui ui = new Ui();

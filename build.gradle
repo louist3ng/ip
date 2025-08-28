@@ -7,9 +7,9 @@ plugins {
 
 checkstyle {
     toolVersion = '10.18.1'
-    // Point to the local file (no inline/URI temp resource)
-    config = resources.text.fromFile('config/checkstyle/checkstyle.xml')
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
 }
+
 
 tasks.withType(Checkstyle).configureEach {
     // Prevent classpath issues (you’re not using custom checks)
@@ -55,3 +55,29 @@ shadowJar {
 run{
     standardInput = System.in
 }
+
+// Put this anywhere in build.gradle (top level)
+tasks.register('installGoogleCheckstyle') {
+    doLast {
+        // toolVersion is a String, not a Property — don't call .get()
+        def ver = project.checkstyle.toolVersion
+        if (!ver) throw new GradleException("checkstyle.toolVersion is not set")
+
+        // Resolve the Checkstyle jar for that exact version
+        def cfg = configurations.detachedConfiguration(
+            dependencies.create("com.puppycrawl.tools:checkstyle:${ver}")
+        )
+        def jar = cfg.resolve().find { it.name ==~ /checkstyle-.*\.jar/ }
+        if (!jar) throw new GradleException("Could not resolve Checkstyle ${ver}")
+
+        // Extract google_checks.xml and save it as your project config
+        copy {
+            from zipTree(jar)
+            include 'google_checks.xml'
+            into "${rootDir}/config/checkstyle"
+            rename { 'checkstyle.xml' } // final path: config/checkstyle/checkstyle.xml
+        }
+        println "Installed Google rules -> config/checkstyle/checkstyle.xml"
+    }
+}
+
