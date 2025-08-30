@@ -23,6 +23,7 @@ public final class DateTimeUtil {
             // Try with time first using optional section
             return LocalDateTime.parse(s, DateTimeFormatter.ofPattern("uuuu-MM-dd[ HH:mm]"));
         } catch (DateTimeParseException ignored) {
+            // Ignored
         }
         try {
             return LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay();
@@ -50,7 +51,8 @@ public final class DateTimeUtil {
             year += 2000; // normalize two‑digit years
         }
 
-        int day, month;
+        int day = 0;
+        int month = 0;
         if (a > 12 && b <= 12) {
             day = a;
             month = b;
@@ -105,10 +107,12 @@ public final class DateTimeUtil {
         try {
             return LocalDateTime.parse(s);
         } catch (Exception ignored) {
+            // Ignored
         }
         try {
             return LocalDateTime.parse(s, DateTimeFormatter.ofPattern("d/M/uuuu H:mm"));
         } catch (Exception ignored) {
+            // Ignored
         }
         return LocalDateTime.now();
     }

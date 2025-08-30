@@ -17,7 +17,9 @@ public class Storage {
         this.file = Paths.get(relativePath);
     }
 
-    /** Ensure parent dir exists */
+    /** 
+     * Ensure parent dir exists.
+    */
     private void ensureDir() throws IOException {
         Path parent = file.getParent();
         if (parent != null) {

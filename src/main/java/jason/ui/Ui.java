@@ -31,7 +31,9 @@ public class Ui {
         return in.nextLine();
     }
 
-    /** Call at the very end of main loop */
+    /**
+     * Call at the very end of main loop.
+     */
     public void close() {
         in.close();
     }
