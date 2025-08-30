@@ -6,6 +6,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Utility class for parsing and formatting date and time.
+ */
 public final class DateTimeUtil {
     private DateTimeUtil() {
     }
@@ -16,7 +19,11 @@ public final class DateTimeUtil {
      */
     public static final boolean PREFER_DMY = true;
 
-    // Minimal requirement for deadlines
+    /**
+     * Parses an ISO 8601 date or date-time string.
+     * @param s the input string
+     * @return the parsed LocalDateTime
+     */
     public static LocalDateTime parseIsoDateOrDateTime(String s) {
         s = s.trim();
         try {
@@ -31,7 +38,12 @@ public final class DateTimeUtil {
         }
     }
 
-    // /from dd/MM/yy HH:mm or MM/dd/yy HH:mm
+    /**
+     * Parses a date-time string in the format dd/MM/yy HH:mm or MM/dd/yy HH:mm.
+     * @param input the input string
+     * @param preferDmy true to prefer dd/MM/yy, false to prefer MM/dd/yy
+     * @return the parsed LocalDateTime
+     */
     public static LocalDateTime parseDayMonthYearWithTime(String input, boolean preferDmy) {
         String s = input.trim();
         String[] parts = s.split("\\s+", 2);
@@ -72,11 +84,20 @@ public final class DateTimeUtil {
         return LocalDateTime.of(d, t);
     }
 
-    // time only HH:mm
+    /**
+     * Parses a time string in the format HH:mm.
+     * @param hm the input string
+     * @return the parsed LocalTime
+     */
     public static LocalTime parseTimeHm(String hm) {
         return LocalTime.parse(hm.trim(), DateTimeFormatter.ofPattern("H:mm"));
     }
 
+    /**
+     * Formats a LocalDateTime object into a human-readable string.
+     * @param ldt the LocalDateTime to format
+     * @return the formatted string
+     */
     public static String formatHuman(LocalDateTime ldt) {
         if (ldt.toLocalTime().equals(LocalTime.MIDNIGHT)) {
             return ldt.format(DateTimeFormatter.ofPattern("MMM dd uuuu"));
@@ -84,15 +105,30 @@ public final class DateTimeUtil {
         return ldt.format(DateTimeFormatter.ofPattern("dd-MM-uuuu HH:mm"));
     }
 
+    /**
+     * Formats a LocalDateTime object into an ISO 8601 string.
+     * @param ldt the LocalDateTime to format
+     * @return the formatted string
+     */
     public static String formatIso(LocalDateTime ldt) {
         return ldt.toString();
     }
 
+    /**
+     * Formats a LocalDateTime object into an ISO 8601 string with a space between date and time.
+     * @param ldt the LocalDateTime to format
+     * @return the formatted string
+     */
     public static String formatIsoWithSpace(LocalDateTime ldt) {
         // yyyy-MM-dd HH:mm (space between date and time)
         return ldt.format(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm"));
     }
 
+    /**
+     * Parses an ISO 8601 date-only string.
+     * @param s the input string
+     * @return the parsed LocalDate
+     */
     public static LocalDate parseIsoDateOnly(String s) {
         return LocalDate.parse(s.trim(), DateTimeFormatter.ISO_LOCAL_DATE);
     }

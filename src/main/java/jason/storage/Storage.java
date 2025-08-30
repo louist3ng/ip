@@ -10,14 +10,24 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
+/**
+ * Storage class to handle loading and saving tasks to disk.
+ */
 public class Storage {
     private final Path file;
 
+    /**
+     * Constructor for Storage.
+     * @param relativePath the relative path to the storage file
+     */
     public Storage(String relativePath) {
         this.file = Paths.get(relativePath);
     }
 
-    /** Ensure parent dir exists */
+    /**
+     * Ensures that the parent directory for the storage file exists.
+     * @throws IOException if an I/O error occurs
+     */
     private void ensureDir() throws IOException {
         Path parent = file.getParent();
         if (parent != null) {
@@ -25,7 +35,11 @@ public class Storage {
         }
     }
 
-    /** Load tasks from disk. If file missing, return empty list. */
+    /**
+     * Loads tasks from disk. If file missing, returns empty list.
+     * @return the list of tasks
+     * @throws IOException if an I/O error occurs
+     */
     public ArrayList<Task> load() throws IOException {
         ensureDir();
         ArrayList<Task> tasks = new ArrayList<>();
@@ -40,7 +54,11 @@ public class Storage {
         return tasks;
     }
 
-    /** Save tasks atomically (write to temp then move). */
+    /**
+     * Saves tasks atomically (write to temp then move).
+     * @param tasks the list of tasks to save
+     * @throws IOException if an I/O error occurs
+     */
     public void save(ArrayList<Task> tasks) throws IOException {
         ensureDir();
         Path tmp = file.resolveSibling(file.getFileName() + ".tmp");
