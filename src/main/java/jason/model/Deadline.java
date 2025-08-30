@@ -1,12 +1,16 @@
 package jason.model;
 
+import java.parser.DateTimeUtil;
 import java.time.LocalDateTime;
 
+<<<<<<< HEAD
 import jason.parser.DateTimeUtil;
 
 /**
  * Represents a deadline task with a specific time.
  */
+=======
+>>>>>>> A-CodingStandard
 public class Deadline extends Task {
     protected LocalDateTime time; 
     
@@ -32,13 +36,15 @@ public class Deadline extends Task {
 
     @Override
     public String getDescription() {
-         return (isDone ? "[D][X] " : "[D][ ] ") + description + " (by: " + DateTimeUtil.formatHuman(time) + ")";
+        return (isDone ? "[D][X] " : "[D][ ] ") + description 
+                + " (by: " + DateTimeUtil.formatHuman(time) + ")";
     }
 
     @Override
     public String toStorageString() {
         // D | 0 | description | by
-        return "D | " + (isDone ? "1" : "0") + " | " + description + " | " + DateTimeUtil.formatIsoWithSpace(time);
+        return "D | " + (isDone ? "1" : "0") 
+                + " | " + description + " | " + DateTimeUtil.formatIsoWithSpace(time);
     }
 
    

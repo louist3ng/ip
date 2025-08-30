@@ -48,7 +48,11 @@ public class Ui {
     }
 
     /**
+<<<<<<< HEAD
      * Call at the very end of main loop
+=======
+     * Call at the very end of main loop.
+>>>>>>> A-CodingStandard
      */
     public void close() {
         in.close();

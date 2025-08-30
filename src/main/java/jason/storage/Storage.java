@@ -24,10 +24,16 @@ public class Storage {
         this.file = Paths.get(relativePath);
     }
 
+<<<<<<< HEAD
     /**
      * Ensures that the parent directory for the storage file exists.
      * @throws IOException if an I/O error occurs
      */
+=======
+    /** 
+     * Ensure parent dir exists.
+    */
+>>>>>>> A-CodingStandard
     private void ensureDir() throws IOException {
         Path parent = file.getParent();
         if (parent != null) {

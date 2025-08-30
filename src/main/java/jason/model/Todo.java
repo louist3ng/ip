@@ -16,7 +16,7 @@ public class Todo extends Task {
 
     @Override
     public String getDescription() {
-         return (isDone ? "[T][X] " : "[T][ ] ") + description;
+        return (isDone ? "[T][X] " : "[T][ ] ") + description;
     }
 
     @Override

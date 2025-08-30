@@ -1,8 +1,7 @@
 package jason.model;
 
-import java.time.LocalDateTime;
-
 import jason.parser.DateTimeUtil;
+import java.time.LocalDateTime;
 
 
 /**
@@ -35,7 +34,7 @@ public class Event extends Task {
 
     @Override
     public String getDescription() {
-         return (isDone ? "[E][X] " : "[E][ ] ")
+        return (isDone ? "[E][X] " : "[E][ ] ")
             + description + " (from: " + from + " to: " + to + ")";
     }
 
