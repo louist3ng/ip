@@ -3,14 +3,6 @@ package jason.model;
 import jason.parser.DateTimeUtil;
 import java.time.LocalDateTime;
 
-<<<<<<< HEAD
-import jason.parser.DateTimeUtil;
-
-/**
- * Represents a deadline task with a specific time.
- */
-=======
->>>>>>> A-CodingStandard
 public class Deadline extends Task {
     protected LocalDateTime time; 
     
