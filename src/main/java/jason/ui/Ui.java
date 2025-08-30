@@ -155,10 +155,22 @@ public class Ui {
         line();
     }
 
+<<<<<<< HEAD
     /**
      * Displays a message when a task fails to parse.
      * @param message the error message
      */
+=======
+    public void showFind(List<Task> tasks) {
+        line();
+        println("Here are the matching tasks in your list:");
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.printf("%d. %s%n", i + 1, tasks.get(i).getDescription());
+            }
+        line();
+    }
+
+>>>>>>> Level-9
     public void showParseError(String message) {
         error(message);
     }

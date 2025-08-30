@@ -1,6 +1,6 @@
 package jason.model;
 
-import java.parser.DateTimeUtil;
+import jason.parser.DateTimeUtil;
 import java.time.LocalDateTime;
 
 <<<<<<< HEAD
