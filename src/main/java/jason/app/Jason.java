@@ -148,6 +148,15 @@ public class Jason {
                     ui.showDelete(removed, tasks.size());
                     saveNow();
 
+                } else if (cmd.equals("find")) {
+                    if (contents.isEmpty()) {
+                        throw new EmptyException();
+                    }
+                
+                    String keyword = contents.trim();
+                    List<Task> found = tasks.find(t -> t.getDescription()
+                            .toLowerCase().contains(keyword.toLowerCase()));
+                    ui.showFind(found);
                 } else {
                     throw new IncorrectInputException();
                 }
