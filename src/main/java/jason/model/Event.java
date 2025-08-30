@@ -4,10 +4,21 @@ import java.time.LocalDateTime;
 
 import jason.parser.DateTimeUtil;
 
+
+/**
+ * Represents an event task with a specific time range.
+ */
 public class Event extends Task {
     protected LocalDateTime from;
     protected LocalDateTime to;
-
+    
+    /**
+     * Constructs an Event task with the given description and time range.
+     *
+     * @param description The description of the event task.
+     * @param from The start time of the event.
+     * @param to The end time of the event.
+     */
     public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
         this.from = from;
