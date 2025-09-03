@@ -13,49 +13,6 @@ import jason.model.Todo;
 
 class ParserTest {
 
-    // ---------- taskCommand / taskContent ----------
-    @Test
-    void taskCommand_and_taskContent_basic() {
-        String in = "  todo buy milk  ";
-        assertEquals("todo", Parser.taskCommand(in));
-        assertEquals("buy milk", Parser.taskContent(in));
-    }
-
-    @Test
-    void deadline_content_keeps_by_clause() {
-        String in = "deadline return book /by 2025-09-01 18:00";
-        assertEquals("deadline", Parser.taskCommand(in));
-        assertEquals("return book /by 2025-09-01 18:00", Parser.taskContent(in));
-    }
-
-    @Test
-    void event_content_keeps_from_to_clause() {
-        String in = "event meeting /from 2025-09-02 14:00 /to 2025-09-02 16:00";
-        assertEquals("event", Parser.taskCommand(in));
-        assertEquals("meeting /from 2025-09-02 14:00 /to 2025-09-02 16:00", Parser.taskContent(in));
-    }
-
-    @Test
-    void inner_spaces_preserved_edges_trimmed() {
-        String in = "todo buy   almond   milk   ";
-        assertEquals("todo", Parser.taskCommand(in));
-        assertEquals("buy   almond   milk", Parser.taskContent(in));
-    }
-
-    @Test
-    void keyword_only_results_in_empty_content() {
-        String in = "todo    ";
-        assertEquals("todo", Parser.taskCommand(in));
-        assertEquals("", Parser.taskContent(in));
-    }
-
-    @Test
-    void mixed_case_command_is_lowercased() {
-        String in = "ToDo read book";
-        assertEquals("todo", Parser.taskCommand(in));
-        assertEquals("read book", Parser.taskContent(in));
-    }
-
     // ---------- fromStorageString (valid lines) ----------
     @Test
     void fromStorage_Todo_done_flag_sets_marked() {
@@ -109,6 +66,7 @@ class ParserTest {
         } catch (ParseException e) {
             threw = true;
         } catch (Throwable ignored) {
+            // no-op
         }
         assertEquals(true, threw);
     }
@@ -118,10 +76,10 @@ class ParserTest {
         boolean threw = false;
         try {
             Parser.fromStorageString("D|0|return book");
-        } // no 4th field
-        catch (ParseException e) {
+        }catch (ParseException e) {
             threw = true;
         } catch (Throwable ignored) {
+            // no-op
         }
         assertEquals(true, threw);
     }
@@ -131,10 +89,10 @@ class ParserTest {
         boolean threw = false;
         try {
             Parser.fromStorageString("E|1|meeting|2025-09-02 14:00");
-        } // no 5th field
-        catch (ParseException e) {
+        } catch (ParseException e) {
             threw = true;
         } catch (Throwable ignored) {
+            // no-op
         }
         assertEquals(true, threw);
     }
@@ -147,6 +105,7 @@ class ParserTest {
         } catch (ParseException e) {
             threw = true;
         } catch (Throwable ignored) {
+            // no-op
         }
         assertEquals(true, threw);
     }

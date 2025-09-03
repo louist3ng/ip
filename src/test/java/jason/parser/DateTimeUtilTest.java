@@ -1,6 +1,9 @@
 package jason.parser;
 
-import jason.model.*;
+import jason.model.Deadline;
+import jason.model.Event;
+import jason.model.TaskList;
+import jason.model.Todo;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +11,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TaskListTest {
+class DateTimeUtilTest {
 
     @Test
     void add_mark_unmark_delete_flow() {
