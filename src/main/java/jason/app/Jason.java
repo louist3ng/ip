@@ -16,11 +16,17 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Main application class.
+ */
 public class Jason {
     private final Ui ui = new Ui();
     private final Storage storage = new Storage("data/jason.txt");
     private final TaskList tasks = new TaskList();
 
+    /**
+     * Saves the current tasks to the storage.
+     */
     private void saveNow() {
         try {
             storage.save(tasks.asArrayList());
@@ -29,6 +35,9 @@ public class Jason {
         }
     }
 
+    /**
+     * Loads tasks from the storage.
+     */
     private void loadNow() {
         try {
             List<Task> loaded = storage.load();
@@ -41,6 +50,9 @@ public class Jason {
         }
     }
 
+    /**
+     * Runs the main application loop.
+     */
     public void run() {
         loadNow();
         ui.intro();

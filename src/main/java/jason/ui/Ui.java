@@ -48,11 +48,7 @@ public class Ui {
     }
 
     /**
-<<<<<<< HEAD
-     * Call at the very end of main loop
-=======
      * Call at the very end of main loop.
->>>>>>> A-CodingStandard
      */
     public void close() {
         in.close();
@@ -155,15 +151,31 @@ public class Ui {
         line();
     }
 
+    /**
+     * Displays a list of tasks that match the given criteria.
+     * @param tasks the list of tasks to display
+     */
     public void showFind(List<Task> tasks) {
         line();
         println("Here are the matching tasks in your list:");
-            for (int i = 0; i < tasks.size(); i++) {
-                System.out.printf("%d. %s%n", i + 1, tasks.get(i).getDescription());
-            }
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.printf("%d. %s%n", i + 1, tasks.get(i).getDescription());
+        }
         line();
     }
 
+    /**
+     * Displays a message when a task cannot be found.
+     * @param message the error message
+     */
+    public void showTaskNotFound(String message) {
+        error("Task not found: " + message);
+    }
+
+    /**
+     * Displays a message when a parsing error occurs.
+     * @param message the error message
+     */
     public void showParseError(String message) {
         error(message);
     }
