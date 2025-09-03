@@ -25,18 +25,18 @@ public class Ui {
      * Displays the introduction message.
      */
     public void intro() {
-        println(LINE);
-        println("Hello, my name is Jason");
-        println(LINE);
+        showMessage(LINE);
+        showMessage("Hello, my name is Jason");
+        showMessage(LINE);
     }
 
     /**
      * Displays the goodbye message.
      */
     public void bye() {
-        println(LINE);
-        println("Bye. Hope to see you again soon!");
-        println(LINE);
+        showMessage(LINE);
+        showMessage("Bye. Hope to see you again soon!");
+        showMessage(LINE);
     }
 
     /**
@@ -58,7 +58,7 @@ public class Ui {
      * Prints a message to the standard output.
      * @param msg the message to print
      */
-    public void println(String msg) {
+    public void showMessage(String msg) {
         System.out.println(msg);
     }
 
@@ -66,7 +66,7 @@ public class Ui {
      * Prints an error message to the standard error output.
      * @param msg the error message to print
      */
-    public void error(String msg) {
+    public void showError(String msg) {
         System.err.println("ERROR: " + msg);
     }
 
@@ -94,7 +94,7 @@ public class Ui {
     public void showList(List<Task> tasks) {
         line();
         if (tasks.isEmpty()) {
-            println("No tasks yet");
+            showMessage("No tasks yet");
         } else {
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.printf("%d. %s%n", i + 1, tasks.get(i).getDescription());
@@ -110,8 +110,8 @@ public class Ui {
      */
     public void showAdd(Task t, int newCount) {
         line();
-        println("Got it. I've added this task:");
-        println("  " + t.getDescription());
+        showMessage("Got it. I've added this task:");
+        showMessage("  " + t.getDescription());
         System.out.printf("Now you have %d tasks in the list.%n", newCount);
         line();
     }
@@ -123,8 +123,8 @@ public class Ui {
      */
     public void showDelete(Task t, int newCount) {
         line();
-        println("Noted. I've removed this task:");
-        println("  " + t.getDescription());
+        showMessage("Noted. I've removed this task:");
+        showMessage("  " + t.getDescription());
         System.out.printf("Now you have %d tasks in the list.%n", newCount);
         line();
     }
@@ -135,8 +135,8 @@ public class Ui {
      */
     public void showMark(Task t) {
         line();
-        println("Nice! I've marked this task as done:");
-        println("  " + t.getDescription());
+        showMessage("Nice! I've marked this task as done:");
+        showMessage("  " + t.getDescription());
         line();
     }
 
@@ -146,8 +146,8 @@ public class Ui {
      */
     public void showUnmark(Task t) {
         line();
-        println("OK, I've marked this task as not done yet:");
-        println("  " + t.getDescription());
+        showMessage("OK, I've marked this task as not done yet:");
+        showMessage("  " + t.getDescription());
         line();
     }
 
@@ -157,7 +157,7 @@ public class Ui {
      */
     public void showFind(List<Task> tasks) {
         line();
-        println("Here are the matching tasks in your list:");
+        showMessage("Here are the matching tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             System.out.printf("%d. %s%n", i + 1, tasks.get(i).getDescription());
         }
@@ -169,7 +169,7 @@ public class Ui {
      * @param message the error message
      */
     public void showTaskNotFound(String message) {
-        error("Task not found: " + message);
+        showError("Task not found: " + message);
     }
 
     /**
@@ -177,7 +177,7 @@ public class Ui {
      * @param message the error message
      */
     public void showParseError(String message) {
-        error(message);
+        showError(message);
     }
 
     /**
@@ -185,6 +185,6 @@ public class Ui {
      * @param message the error message
      */
     public void showDiskError(String message) {
-        error("Disk error: " + message);
+        showError("Disk error: " + message);
     }
 }

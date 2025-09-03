@@ -7,32 +7,11 @@ import jason.model.Task;
 import jason.model.Todo;
 import java.time.LocalDateTime;
 
+
 /**
  * Parser class to handle user input and storage string parsing.
  */
 public class Parser {
-    /**
-     * Extracts the command from a user input string.
-     * @param s the input string
-     * @return the extracted command
-     */
-    public static String taskCommand(String s) {
-        String trimmed = s.trim();
-        int sp = trimmed.indexOf(' ');
-        return (sp == -1 ? trimmed : trimmed.substring(0, sp)).toLowerCase();
-    }
-
-    /**
-     * Extracts the content from a user input string.
-     * @param s the input string
-     * @return the extracted content
-     */
-    public static String taskContent(String s) {
-        String trimmed = s.trim();
-        int sp = trimmed.indexOf(' ');
-        return (sp == -1 ? "" : trimmed.substring(sp + 1).trim());
-    }
-
     /**
      * Parses a task from a storage string.
      * @param line the storage string
