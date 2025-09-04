@@ -63,8 +63,8 @@ public final class DateTimeUtil {
             year += 2000; // normalize two‑digit years
         }
 
-        int day = 0;
-        int month = 0;
+        int day;
+        int month;
         if (a > 12 && b <= 12) {
             day = a;
             month = b;

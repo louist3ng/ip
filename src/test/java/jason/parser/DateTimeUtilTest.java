@@ -1,122 +1,123 @@
 package jason.parser;
 
-import jason.model.*;
-
-import org.junit.jupiter.api.Test;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 
-class TaskListTest {
+class DateTimeUtilTest {
+
+    /* ---------------- ISO date/datetime ---------------- */
 
     @Test
-    void add_mark_unmark_delete_flow() {
-        TaskList list = new TaskList();
-
-        // add
-        list.add(new Todo("buy milk"));
-        assertEquals(1, list.size());
-        assertEquals(false, list.get(0).isDone());
-
-        // mark
-        list.mark(0);
-        assertEquals(true, list.get(0).isDone());
-
-        // unmark
-        list.unmark(0);
-        assertEquals(false, list.get(0).isDone());
-
-        // delete
-        list.removeAt(0);
-        assertEquals(0, list.size());
+    void parseIsoDate_onlyDate_ok() {
+        LocalDateTime ldt = DateTimeUtil.parseIsoDateOrDateTime("2025-09-04");
+        assertEquals(LocalDateTime.of(2025, 9, 4, 0, 0), ldt);
     }
 
     @Test
-    void deadline_and_event_time_fields_are_preserved() {
-        Deadline d = new Deadline("return book",
-                LocalDateTime.of(2025, 9, 1, 18, 0));
-        Event e = new Event("team meeting",
-                LocalDateTime.of(2025, 9, 2, 14, 0),
-                LocalDateTime.of(2025, 9, 2, 16, 0));
-
-        TaskList list = new TaskList();
-        list.add(d);
-        list.add(e);
-
-        // size and types
-        assertEquals(2, list.size());
-        assertEquals(Deadline.class, list.get(0).getClass());
-        assertEquals(Event.class, list.get(1).getClass());
-
-        // date-time fields
-        assertEquals(LocalDateTime.of(2025, 9, 1, 18, 0), ((Deadline) list.get(0)).getTime());
-        assertEquals(LocalDateTime.of(2025, 9, 2, 14, 0), ((Event) list.get(1)).getFrom());
-        assertEquals(LocalDateTime.of(2025, 9, 2, 16, 0), ((Event) list.get(1)).getTo());
+    void parseIsoDate_withTime_ok() {
+        LocalDateTime ldt = DateTimeUtil.parseIsoDateOrDateTime("2025-09-04 14:30");
+        assertEquals(LocalDateTime.of(2025, 9, 4, 14, 30), ldt);
     }
 
     @Test
-    void mark_unmark_only_affect_target_item() {
-        TaskList list = new TaskList();
-        list.add(new Todo("a"));
-        list.add(new Todo("b"));
+    void parseIsoDate_invalid_throws() {
+        Exception e = assertThrows(DateTimeParseException.class,
+                () -> DateTimeUtil.parseIsoDateOrDateTime("09-04-2025"));
+        assertEquals(DateTimeParseException.class, e.getClass());
+    }
 
-        list.mark(1);
-        assertEquals(false, list.get(0).isDone());
-        assertEquals(true, list.get(1).isDone());
+    /* ---------------- Day/Month/Year with time ---------------- */
 
-        list.unmark(1);
-        assertEquals(false, list.get(0).isDone());
-        assertEquals(false, list.get(1).isDone());
+    @Test
+    void parseDayMonthYearWithTime_preferDmy_ok() {
+        LocalDateTime ldt = DateTimeUtil.parseDayMonthYearWithTime("04/09/25 09:15", true);
+        assertEquals(LocalDateTime.of(2025, 9, 4, 9, 15), ldt);
     }
 
     @Test
-    void operations_on_invalid_index_throw_something() {
-        TaskList list = new TaskList();
+    void parseDayMonthYearWithTime_preferMdy_ok() {
+        LocalDateTime ldt = DateTimeUtil.parseDayMonthYearWithTime("04/09/25 09:15", false);
+        assertEquals(LocalDateTime.of(2025, 4, 9, 9, 15), ldt);
+    }
 
-        boolean threw;
+    @Test
+    void parseDayMonthYearWithTime_disambiguateByValue_ok() {
+        LocalDateTime ldt = DateTimeUtil.parseDayMonthYearWithTime("13/02/25 08:00", false);
+        assertEquals(LocalDateTime.of(2025, 2, 13, 8, 0), ldt); // must be 13th Feb
+    }
 
-        // empty list mark/unmark/delete
-        threw = false;
-        try {
-            list.mark(0);
-        } catch (Throwable t) {
-            threw = true;
-        }
-        assertEquals(true, threw);
+    @Test
+    void parseDayMonthYearWithTime_twoDigitYear_ok() {
+        LocalDateTime ldt = DateTimeUtil.parseDayMonthYearWithTime("01/01/05 00:00", true);
+        assertEquals(LocalDateTime.of(2005, 1, 1, 0, 0), ldt);
+    }
 
-        threw = false;
-        try {
-            list.unmark(0);
-        } catch (Throwable t) {
-            threw = true;
-        }
-        assertEquals(true, threw);
+    @Test
+    void parseDayMonthYearWithTime_invalid_throws() {
+        Exception e = assertThrows(DateTimeParseException.class,
+                () -> DateTimeUtil.parseDayMonthYearWithTime("invalid", true));
+        assertEquals(DateTimeParseException.class, e.getClass());
+    }
 
-        threw = false;
-        try {
-            list.removeAt(0);
-        } catch (Throwable t) {
-            threw = true;
-        }
-        assertEquals(true, threw);
+    /* ---------------- Time only ---------------- */
 
-        // out of range / negative
-        list.add(new Todo("x"));
-        threw = false;
-        try {
-            list.mark(5);
-        } catch (Throwable t) {
-            threw = true;
-        }
-        assertEquals(true, threw);
+    @Test
+    void parseTimeHm_ok() {
+        LocalTime t = DateTimeUtil.parseTimeHm("07:45");
+        assertEquals(LocalTime.of(7, 45), t);
+    }
 
-        threw = false;
-        try {
-            list.removeAt(-1);
-        } catch (Throwable t) {
-            threw = true;
-        }
-        assertEquals(true, threw);
+    /* ---------------- Formatting ---------------- */
+
+    @Test
+    void formatHuman_midnight_onlyDate() {
+        LocalDateTime ldt = LocalDateTime.of(2025, 9, 4, 0, 0);
+        assertEquals("Sep 04 2025", DateTimeUtil.formatHuman(ldt));
+    }
+
+    @Test
+    void formatHuman_withTime() {
+        LocalDateTime ldt = LocalDateTime.of(2025, 9, 4, 14, 30);
+        assertEquals("04-09-2025 14:30", DateTimeUtil.formatHuman(ldt));
+    }
+
+    @Test
+    void formatIso_ok() {
+        LocalDateTime ldt = LocalDateTime.of(2025, 9, 4, 14, 30);
+        assertEquals("2025-09-04T14:30", DateTimeUtil.formatIso(ldt));
+    }
+
+    @Test
+    void formatIsoWithSpace_ok() {
+        LocalDateTime ldt = LocalDateTime.of(2025, 9, 4, 14, 30);
+        assertEquals("2025-09-04 14:30", DateTimeUtil.formatIsoWithSpace(ldt));
+    }
+
+    /* ---------------- ISO date-only ---------------- */
+
+    @Test
+    void parseIsoDateOnly_ok() {
+        LocalDate d = DateTimeUtil.parseIsoDateOnly("2025-09-04");
+        assertEquals(LocalDate.of(2025, 9, 4), d);
+    }
+
+    /* ---------------- Loose parsing ---------------- */
+
+    @Test
+    void tryParseLoose_validIso_ok() {
+        LocalDateTime ldt = DateTimeUtil.tryParseLoose("2025-09-04T10:00");
+        assertEquals(LocalDateTime.of(2025, 9, 4, 10, 0), ldt);
+    }
+
+    @Test
+    void tryParseLoose_validLegacy_ok() {
+        LocalDateTime ldt = DateTimeUtil.tryParseLoose("4/9/2025 10:00");
+        assertEquals(LocalDateTime.of(2025, 9, 4, 10, 0), ldt);
     }
 }
