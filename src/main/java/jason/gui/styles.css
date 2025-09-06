@@ -1,0 +1,157 @@
+/* ========== Base / Theme ========== */
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #f7f8fa;
+    -fx-accent: #4a90e2;                  /* control accent color */
+    -fx-focus-color: #4a90e2;             /* focus ring */
+    -fx-faint-focus-color: rgba(74,144,226,0.2);
+}
+
+/* Optional density toggles: add one of these classes to the root in code if you want */
+.root.comfortable { -fx-font-size: 14px; }
+.root.compact     { -fx-font-size: 12px; }
+
+/* ========== Chat Area ========== */
+.scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* VBox that holds dialog bubbles */
+.vbox {
+    -fx-padding: 12;
+    -fx-spacing: 10;
+}
+
+/* Subtle “resize grip” cue at bottom-right of ScrollPane */
+.scroll-pane .corner {
+    -fx-background-color:
+        linear-gradient(to bottom right, transparent 50%, rgba(0,0,0,0.06) 50%),
+        transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0 0 6px 0;
+}
+
+/* ========== Bubbles ========== */
+.bubble-user, .bubble-bot {
+    -fx-background-radius: 12px;
+    -fx-padding: 8 12;
+    -fx-wrap-text: true;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 6, 0.15, 0, 1);
+    -fx-text-fill: #202124;
+}
+
+.bubble-user {
+    -fx-background-color: #d8ecff;        /* light blue */
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.bubble-bot {
+    -fx-background-color: #eef0f3;        /* light grey */
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Selection color inside Labels (when selectable) and TextInputControls */
+.text-input, .label {
+    -fx-highlight-fill: rgba(74,144,226,0.25);
+    -fx-highlight-text-fill: -fx-text-inner-color;
+}
+
+/* ========== Avatars (ImageView) ========== */
+.image-view {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 4, 0.25, 0, 0);
+    -fx-background-radius: 999;            /* if wrapped in a Shape, keeps it round */
+}
+
+/* ========== Input Bar ========== */
+.text-field {
+    -fx-background-color: white;
+    -fx-background-radius: 6px;
+    -fx-border-color: #c9cdd3;
+    -fx-border-radius: 6px;
+    -fx-padding: 8 10;
+    -fx-prompt-text-fill: #9aa0a6;
+}
+.text-field:focused {
+    -fx-border-color: -fx-focus-color;
+    -fx-effect: dropshadow(gaussian, rgba(74,144,226,0.30), 6, 0.25, 0, 0);
+}
+
+/* ========== Send Button ========== */
+.button {
+    -fx-background-radius: 8px;
+    -fx-padding: 8 14;
+    -fx-background-color: linear-gradient(to bottom, -fx-accent, derive(-fx-accent, -15%));
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, derive(-fx-accent, 10%), -fx-accent);
+}
+.button:pressed {
+    -fx-background-color: derive(-fx-accent, -25%);
+}
+.button:disabled {
+    -fx-opacity: 0.6;
+}
+
+/* ========== Scrollbars (QoL slimmer look) ========== */
+.scroll-bar:vertical, .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+.scroll-bar .thumb {
+    -fx-background-color: rgba(0,0,0,0.25);
+    -fx-background-insets: 0;
+    -fx-background-radius: 6px;
+}
+.scroll-bar .thumb:hover {
+    -fx-background-color: rgba(0,0,0,0.35);
+}
+.scroll-bar .increment-button, 
+.scroll-bar .decrement-button {
+    -fx-padding: 0; /* hide arrow paddings for a cleaner bar */
+    -fx-background-color: transparent;
+}
+
+/* ========== Tooltips & Context Menus ========== */
+.tooltip {
+    -fx-background-radius: 6px;
+    -fx-background-color: rgba(32,33,36,0.92);
+    -fx-text-fill: white;
+    -fx-padding: 6 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 8, 0.4, 0, 2);
+}
+.context-menu {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 6 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.35, 0, 2);
+}
+.menu-item {
+    -fx-padding: 6 12;
+}
+.menu-item:focused {
+    -fx-background-color: rgba(74,144,226,0.12);
+}
+
+/* ========== Error / Warn accents (use in code via styleClass) ========== */
+.bubble-warn  { -fx-background-color: #fff3cd; }  /* soft yellow */
+.bubble-error { -fx-background-color: #ffe0e0; }  /* soft red   }
+
+/* ========== High-contrast helper (toggle by adding .high-contrast to root) ========== */
+.root.high-contrast {
+    -fx-background-color: white;
+}
+.root.high-contrast .bubble-user { -fx-background-color: #cfe8ff; }
+.root.high-contrast .bubble-bot  { -fx-background-color: #e8eaed; }
+.root.high-contrast .text-field  { -fx-border-color: #5f6368; }

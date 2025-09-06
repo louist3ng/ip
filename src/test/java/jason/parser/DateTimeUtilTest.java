@@ -1,5 +1,12 @@
 package jason.parser;
 
+import jason.model.Deadline;
+import jason.model.Event;
+import jason.model.TaskList;
+import jason.model.Todo;
+
+import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,7 +18,7 @@ import org.junit.jupiter.api.Test;
 
 class DateTimeUtilTest {
 
-    /* ---------------- ISO date/datetime ---------------- */
+class TaskListTest {
 
     @Test
     void parseIsoDate_onlyDate_ok() {

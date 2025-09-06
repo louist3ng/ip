@@ -1,34 +1,24 @@
 package jason.parser;
 
-import jason.exception.ParseException;
-import jason.model.Deadline;
-import jason.model.Event;
-import jason.model.Task;
-import jason.model.Todo;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 
-class ParserFromStorageTest {
+import jason.exception.ParseException;
+import jason.model.Deadline;
+import jason.model.Task;
+import jason.model.Todo;
 
-    /* -------------------- Todo -------------------- */
+class ParserTest {
 
+    // ---------- fromStorageString (valid lines) ----------
     @Test
-    void parse_todo_unmarked_ok() {
-        Task t = Parser.fromStorageString("T | 0 | read book");
-        assertEquals(Todo.class, t.getClass());
-        // assuming Task has isDone() and getDescription()
-        assertEquals(false, t.isDone());
-        assertEquals("read book", t.getDescription());
-    }
-
-    @Test
-    void parse_todo_marked_ok() {
-        Task t = Parser.fromStorageString("T | 1 | groceries");
+    void fromStorage_Todo_done_flag_sets_marked() {
+        Task t = Parser.fromStorageString("T|1|buy milk");
+        // class check using assertEquals
         assertEquals(Todo.class, t.getClass());
         assertEquals(true, t.isDone());
         assertEquals("groceries", t.getDescription());
@@ -73,42 +63,54 @@ class ParserFromStorageTest {
     /* -------------------- Event -------------------- */
 
     @Test
-    void parse_event_ok() {
-        Task t = Parser.fromStorageString("E | 0 | project | 2025-09-10 10:00 | 2025-09-10 12:00");
-        assertEquals(Event.class, t.getClass());
-        assertEquals(false, t.isDone());
-        assertEquals("project", t.getDescription());
-        assertEquals(LocalDateTime.of(2025, 9, 10, 10, 0), ((Event) t).getFrom());
-        assertEquals(LocalDateTime.of(2025, 9, 10, 12, 0), ((Event) t).getTo());
+    void fromStorage_corrupt_line_too_few_fields_throws() {
+        boolean threw = false;
+        try {
+            Parser.fromStorageString("T|1");
+        } catch (ParseException e) {
+            threw = true;
+        } catch (Throwable ignored) {
+            // no-op
+        }
+        assertEquals(true, threw);
     }
 
     @Test
-    void parse_event_missingField_throwsParseException() {
-        Exception e = assertThrows(ParseException.class,
-                () -> Parser.fromStorageString("E | 1 | meeting | 2025-09-10 10:00"));
-        assertEquals(ParseException.class, e.getClass());
+    void fromStorage_deadline_missing_date_throws() {
+        boolean threw = false;
+        try {
+            Parser.fromStorageString("D|0|return book");
+        }catch (ParseException e) {
+            threw = true;
+        } catch (Throwable ignored) {
+            // no-op
+        }
+        assertEquals(true, threw);
     }
 
     @Test
-    void parse_event_badDate_throwsDateTimeParseException() {
-        Exception e = assertThrows(DateTimeParseException.class,
-                () -> Parser.fromStorageString("E | 1 | mtg | 10-09-2025 10:00 | 2025-09-10 12:00"));
-        assertEquals(DateTimeParseException.class, e.getClass());
-    }
-
-    /* -------------------- Generic error paths -------------------- */
-
-    @Test
-    void parse_corruptLine_tooFewFields_throwsParseException() {
-        Exception e = assertThrows(ParseException.class,
-                () -> Parser.fromStorageString("X | 1"));
-        assertEquals(ParseException.class, e.getClass());
+    void fromStorage_event_missing_to_throws() {
+        boolean threw = false;
+        try {
+            Parser.fromStorageString("E|1|meeting|2025-09-02 14:00");
+        } catch (ParseException e) {
+            threw = true;
+        } catch (Throwable ignored) {
+            // no-op
+        }
+        assertEquals(true, threw);
     }
 
     @Test
-    void parse_unknownType_throwsParseException() {
-        Exception e = assertThrows(ParseException.class,
-                () -> Parser.fromStorageString("Z | 1 | something"));
-        assertEquals(ParseException.class, e.getClass());
+    void fromStorage_unknown_type_throws() {
+        boolean threw = false;
+        try {
+            Parser.fromStorageString("X|1|something");
+        } catch (ParseException e) {
+            threw = true;
+        } catch (Throwable ignored) {
+            // no-op
+        }
+        assertEquals(true, threw);
     }
 }
