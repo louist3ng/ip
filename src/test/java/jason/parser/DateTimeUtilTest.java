@@ -1,12 +1,5 @@
 package jason.parser;
 
-import jason.model.Deadline;
-import jason.model.Event;
-import jason.model.TaskList;
-import jason.model.Todo;
-
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -24,6 +17,7 @@ class TaskListTest {
     void parseIsoDate_onlyDate_ok() {
         LocalDateTime ldt = DateTimeUtil.parseIsoDateOrDateTime("2025-09-04");
         assertEquals(LocalDateTime.of(2025, 9, 4, 0, 0), ldt);
+    }
     }
 
     @Test
