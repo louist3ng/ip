@@ -1,0 +1,107 @@
+/* ========== Base / Theme (Telegram-like) ========== */
+.root {
+    -fx-font-family: "Segoe UI", "San Francisco", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 15px;
+    -fx-background-color: #eaeef2;         /* Telegram-like chat background */
+    -fx-accent: #3390ec;                   /* Telegram blue */
+    -fx-focus-color: #3390ec;
+    -fx-faint-focus-color: rgba(51,144,236,0.2);
+}
+
+/* ========== Chat Area ========== */
+.scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.vbox {
+    -fx-padding: 12;
+    -fx-spacing: 8;
+}
+
+/* ========== Bubbles (Telegram style) ========== */
+.bubble-user, .bubble-bot {
+    -fx-background-radius: 16px;
+    -fx-padding: 8 12;
+    -fx-wrap-text: true;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 3, 0.2, 0, 1);
+    -fx-text-fill: #202124;
+    -fx-max-width: 420px;                   /* prevent over-wide bubbles */
+}
+
+.bubble-user {
+    -fx-background-color: #cce5ff;          /* Telegram blue bubble (lighter) */
+    -fx-alignment: CENTER_RIGHT;
+    -fx-text-fill: black;
+}
+
+.bubble-bot {
+    -fx-background-color: white;            /* white bubble for bot */
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* ========== Input Bar (Telegram style) ========== */
+.text-field {
+    -fx-background-color: white;
+    -fx-background-radius: 18px;
+    -fx-border-color: #d1d7de;
+    -fx-border-radius: 18px;
+    -fx-padding: 8 12;
+    -fx-prompt-text-fill: #9aa0a6;
+}
+.text-field:focused {
+    -fx-border-color: -fx-focus-color;
+    -fx-effect: dropshadow(gaussian, rgba(51,144,236,0.25), 6, 0.25, 0, 0);
+}
+
+/* ========== Send Button ========== */
+.button {
+    -fx-background-radius: 20px;
+    -fx-padding: 6 14;
+    -fx-background-color: linear-gradient(to bottom, -fx-accent, derive(-fx-accent, -15%));
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, derive(-fx-accent, 10%), -fx-accent);
+}
+.button:pressed {
+    -fx-background-color: derive(-fx-accent, -25%);
+}
+.button:disabled {
+    -fx-opacity: 0.5;
+}
+
+/* ========== Scrollbars (slim & light) ========== */
+.scroll-bar:vertical, .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+.scroll-bar .thumb {
+    -fx-background-color: rgba(0,0,0,0.15);
+    -fx-background-radius: 8px;
+}
+.scroll-bar .thumb:hover {
+    -fx-background-color: rgba(0,0,0,0.25);
+}
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+
+/* ========== Tooltips & Context Menus ========== */
+.tooltip {
+    -fx-background-radius: 6px;
+    -fx-background-color: rgba(32,33,36,0.92);
+    -fx-text-fill: white;
+    -fx-padding: 6 8;
+}
