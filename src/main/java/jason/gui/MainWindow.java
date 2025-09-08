@@ -32,8 +32,9 @@ public class MainWindow {
 
     private static Image loadImage(String path) {
         InputStream is = MainWindow.class.getResourceAsStream(path);
-        if (is == null)
+        if (is == null) {
             throw new IllegalStateException("Image not found: " + path);
+        }
         return new Image(is);
     }
 
@@ -74,8 +75,9 @@ public class MainWindow {
     @FXML
     private void handleUserInput() {
         String text = userInput.getText().trim();
-        if (text.isEmpty())
+        if (text.isEmpty()) {
             return;
+        }
 
         dialogContainer.getChildren().add(DialogBox.user(text, userImage));
         scrollPane.setVvalue(1.0);

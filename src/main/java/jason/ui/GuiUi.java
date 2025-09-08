@@ -16,8 +16,10 @@ public class GuiUi extends Ui {
     private final Consumer<String> sink;
 
     /**
-     * @param sink a function that will display strings in the GUI (e.g., append to
-     *             chat)
+     * Creates a GUI Ui that sends all output to the given sink.
+     *
+     * @param sink a Consumer that accepts strings to display
+     * @throws NullPointerException if sink is null
      */
     public GuiUi(Consumer<String> sink) {
         this.sink = Objects.requireNonNull(sink, "sink");
@@ -60,11 +62,12 @@ public class GuiUi extends Ui {
         if (tasks == null || tasks.isEmpty()) {
             out("No tasks yet");
         } else {
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < tasks.size(); i++) {
                 Task t = tasks.get(i);
-                // mirror your Ui: show index and description
-                outf("%d. %s", i + 1, t.getDescription());
+                sb.append(String.format("%d. %s%n", i + 1, t.getDescription()));
             }
+            out(sb.toString().trim()); // print all at once
         }
         line();
     }

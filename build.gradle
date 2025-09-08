@@ -27,8 +27,7 @@ repositories {
 dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
-
-     String javaFxVersion = '17.0.7'
+    String javaFxVersion = '17.0.7'
 
     implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'mac'
@@ -42,6 +41,7 @@ dependencies {
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'mac'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'linux'
+    
 }
 
 test {
@@ -70,12 +70,6 @@ shadowJar {
 run{
     standardInput = System.in
 }
-
-application {
-    // Use a thin "Launcher" class (workaround for JavaFX + fat jars)
-    mainClass = "jason.gui.Launcher"
-}
-
 
 // Put this anywhere in build.gradle (top level)
 tasks.register('installGoogleCheckstyle') {

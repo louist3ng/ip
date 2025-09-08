@@ -8,6 +8,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+/**
+ * A dialog box consisting of an ImageView to represent the speaker's face and a label
+ * containing text from the speaker.
+ */
 public class DialogBox extends HBox {
     private final Label text = new Label();
     private final ImageView avatar = new ImageView();
@@ -47,12 +51,26 @@ public class DialogBox extends HBox {
         text.setAlignment(Pos.CENTER_RIGHT);
     }
 
+    /**
+     * Creates a dialog box for Jason's messages.
+     *
+     * @param message the message to display
+     * @param img     the image to display
+     * @return a DialogBox for Jason's messages
+     */
     public static DialogBox jason(String message, Image img) {
         DialogBox db = new DialogBox(message, img);
         db.text.getStyleClass().add("bubble-bot");
         return db;
     }
 
+    /**
+     * Creates a dialog box for the user's messages.
+     *
+     * @param message the message to display
+     * @param img     the image to display
+     * @return a DialogBox for the user's messages
+     */
     public static DialogBox user(String message, Image img) {
         DialogBox db = new DialogBox(message, img);
         db.flip(); // right side
