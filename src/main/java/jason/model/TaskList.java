@@ -34,6 +34,7 @@ public class TaskList {
      */
     public void add(Task t) {
         tasks.add(t);
+        assert t != null; // caller should ensure non-null
     }
 
     /**
@@ -100,5 +101,6 @@ public class TaskList {
      */
     public List<Task> find(Predicate<Task> p) {
         return tasks.stream().filter(p).toList();
+        assert p != null; // caller should ensure non-null
     }
 }

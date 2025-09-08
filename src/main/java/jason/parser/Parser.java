@@ -42,6 +42,7 @@ public class Parser {
                     throw new ParseException("Bad D line: " + line);
                 }
                 LocalDateTime by = DateTimeUtil.parseIsoDateOrDateTime(p[3]);
+                assert by != null; // parseIsoDateOrDateTime never returns null
                 var d = new Deadline(desc, by);
                 if (done) {
                     d.mark();
@@ -56,6 +57,8 @@ public class Parser {
                 }
                 LocalDateTime from = DateTimeUtil.parseIsoDateOrDateTime(p[3]);
                 LocalDateTime to = DateTimeUtil.parseIsoDateOrDateTime(p[4]);
+                assert from != null && to != null; 
+                // parseIsoDateOrDateTime never returns null
                 var e = new Event(desc, from, to);
                 if (done) {
                     e.mark();

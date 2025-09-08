@@ -25,6 +25,7 @@ public final class DateTimeUtil {
      * @return the parsed LocalDateTime
      */
     public static LocalDateTime parseIsoDateOrDateTime(String s) {
+        assert s != null; // caller should ensure non-null
         s = s.trim();
         try {
             // Try with time first using optional section
@@ -46,6 +47,7 @@ public final class DateTimeUtil {
      * @return the parsed LocalDateTime
      */
     public static LocalDateTime parseDayMonthYearWithTime(String input, boolean preferDmy) {
+        assert input != null; // caller should ensure non-null
         String s = input.trim();
         String[] parts = s.split("\\s+", 2);
         if (parts.length != 2) {
@@ -62,9 +64,9 @@ public final class DateTimeUtil {
         if (year < 100) {
             year += 2000; // normalize two‑digit years
         }
-
         int day;
         int month;
+
         if (a > 12 && b <= 12) {
             day = a;
             month = b;
@@ -81,6 +83,10 @@ public final class DateTimeUtil {
             }
         }
 
+        assert month >= 1 && month <= 12;
+        assert day >= 1 && day <= 31;
+        // Note: LocalDate.of() will throw DateTimeException if day is invalid for month
+
         LocalDate d = LocalDate.of(year, month, day);
         LocalTime t = LocalTime.parse(parts[1], DateTimeFormatter.ofPattern("H:mm"));
         return LocalDateTime.of(d, t);
@@ -92,6 +98,7 @@ public final class DateTimeUtil {
      * @return the parsed LocalTime
      */
     public static LocalTime parseTimeHm(String hm) {
+        assert hm != null; // caller should ensure non-null
         return LocalTime.parse(hm.trim(), DateTimeFormatter.ofPattern("H:mm"));
     }
 
@@ -101,6 +108,7 @@ public final class DateTimeUtil {
      * @return the formatted string
      */
     public static String formatHuman(LocalDateTime ldt) {
+        assert ldt != null; // caller should ensure non-null
         if (ldt.toLocalTime().equals(LocalTime.MIDNIGHT)) {
             return ldt.format(DateTimeFormatter.ofPattern("MMM dd uuuu"));
         }
@@ -113,6 +121,7 @@ public final class DateTimeUtil {
      * @return the formatted string
      */
     public static String formatIso(LocalDateTime ldt) {
+        assert ldt != null; // caller should ensure non-null
         return ldt.toString();
     }
 
@@ -122,6 +131,7 @@ public final class DateTimeUtil {
      * @return the formatted string
      */
     public static String formatIsoWithSpace(LocalDateTime ldt) {
+        assert ldt != null; // caller should ensure non-null
         // yyyy-MM-dd HH:mm (space between date and time)
         return ldt.format(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm"));
     }
@@ -132,6 +142,7 @@ public final class DateTimeUtil {
      * @return the parsed LocalDate
      */
     public static LocalDate parseIsoDateOnly(String s) {
+        assert s != null; // caller should ensure non-null
         return LocalDate.parse(s.trim(), DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
@@ -140,6 +151,7 @@ public final class DateTimeUtil {
      * failed.
      */
     public static LocalDateTime tryParseLoose(String s) {
+        assert s != null; // caller should ensure non-null
         try {
             return LocalDateTime.parse(s);
         } catch (Exception ignored) {
