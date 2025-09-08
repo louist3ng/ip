@@ -62,14 +62,15 @@ public class MainWindow {
             List<Task> loaded = storage.load();
             loaded.forEach(tasks::add);
             if (!loaded.isEmpty()) {
-                ui.showMessage("[Loaded " + loaded.size() + " tasks from disk]");
+                ui.showMessage("[Loading " + loaded.size() 
+                        + " previously saved]");
             }
         } catch (IOException e) {
             appendJason("[WARN] Could not load tasks: " + e.getMessage());
         }
 
         // Intro
-        appendJason("Hello, my name is Jason.");
+        appendJason("Good morning sir, my name is Jason.");
     }
 
     @FXML
@@ -92,7 +93,7 @@ public class MainWindow {
                 Platform.exit();
             }
         } catch (EmptyException | OobIndexException | IncorrectInputException e) {
-            appendJason(e.toString());
+            appendJason(e.getMessage());
         } catch (NumberFormatException e) {
             appendJason("☹ OOPS!!! The task number should be an integer.");
         } catch (Exception e) {

@@ -30,10 +30,6 @@ public class GuiUi extends Ui {
         sink.accept(s);
     }
 
-    private void outf(String fmt, Object... args) {
-        out(String.format(fmt, args));
-    }
-
     /* ---------- overrides to mirror Ui behavior ---------- */
 
     @Override
@@ -58,7 +54,6 @@ public class GuiUi extends Ui {
 
     @Override
     public void showList(List<Task> tasks) {
-        line();
         if (tasks == null || tasks.isEmpty()) {
             out("No tasks yet");
         } else {
@@ -69,54 +64,57 @@ public class GuiUi extends Ui {
             }
             out(sb.toString().trim()); // print all at once
         }
-        line();
     }
 
     @Override
     public void showAdd(Task t, int newCount) {
-        line();
-        out("Got it. I've added this task:");
-        out("  " + t.getDescription());
-        outf("Now you have %d tasks in the list.", newCount);
-        line();
+        String message = String.format(
+                "Got it. I've added this task:\n  %s\nNow you have %d tasks in the list.",
+                t.getDescription(),
+                newCount);
+        out(message); // print once
     }
 
     @Override
     public void showDelete(Task t, int newCount) {
-        line();
-        out("Noted. I've removed this task:");
-        out("  " + t.getDescription());
-        outf("Now you have %d tasks in the list.", newCount);
-        line();
+        String message = String.format(
+                "Noted. I've removed this task:\n  %s\nNow you have %d tasks in the list.",
+                t.getDescription(),
+                newCount);
+        out(message);
     }
 
     @Override
     public void showMark(Task t) {
-        line();
-        out("Nice! I've marked this task as done:");
-        out("  " + t.getDescription());
-        line();
+        String message = String.format(
+                "Nice! I've marked this task as done:\n  %s",
+                t.getDescription());
+        out(message);
     }
 
     @Override
     public void showUnmark(Task t) {
-        line();
-        out("OK, I've marked this task as not done yet:");
-        out("  " + t.getDescription());
-        line();
+        String message = String.format(
+                "OK, I've marked this task as not done yet:\n  %s",
+                t.getDescription());
+        out(message);
     }
 
     @Override
     public void showFind(List<Task> tasks) {
-        line();
-        out("Here are the matching tasks in your list:");
-        if (tasks != null) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Here are the matching tasks in your list:\n");
+
+        if (tasks != null && !tasks.isEmpty()) {
             for (int i = 0; i < tasks.size(); i++) {
                 Task t = tasks.get(i);
-                outf("%d. %s", i + 1, t.getDescription());
+                sb.append(String.format("%d. %s%n", i + 1, t.getDescription()));
             }
+        } else {
+            sb.append("No matching tasks found.");
         }
-        line();
+
+        out(sb.toString().trim()); // single output → one chat bubble
     }
 
     @Override
