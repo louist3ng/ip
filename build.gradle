@@ -59,7 +59,7 @@ test {
 }
 
 application {
-    mainClass.set("jason.app.Jason")
+    mainClass.set("jason.gui.Launcher")
 }
 
 shadowJar {
