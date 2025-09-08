@@ -40,6 +40,7 @@ public class EventCommand extends Command {
                 .parseDayMonthYearWithTime(fromStr, DateTimeUtil.PREFER_DMY);
         LocalDateTime to = LocalDateTime
                 .of(from.toLocalDate(), DateTimeUtil.parseTimeHm(toStr));
+                
         if (to.isBefore(from)) {
             to = to.plusDays(1);
         }
