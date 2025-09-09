@@ -59,6 +59,7 @@ public class Ui {
      * @param msg the message to print
      */
     public void showMessage(String msg) {
+        assert msg != null; // caller should ensure non-null
         System.out.println(msg);
     }
 
@@ -67,6 +68,7 @@ public class Ui {
      * @param msg the error message to print
      */
     public void showError(String msg) {
+        assert msg != null; // caller should ensure non-null
         System.err.println("ERROR: " + msg);
     }
 
@@ -75,6 +77,7 @@ public class Ui {
      * @param msg the warning message to print
      */
     public void warn(String msg) {
+        assert msg != null; // caller should ensure non-null
         System.err.println("WARNING: " + msg);
     }
 
@@ -92,6 +95,7 @@ public class Ui {
      * @param tasks the list of tasks to display
      */
     public void showList(List<Task> tasks) {
+        assert tasks != null; // caller should ensure non-null
         line();
         if (tasks.isEmpty()) {
             showMessage("No tasks yet");
@@ -109,6 +113,7 @@ public class Ui {
      * @param newCount the new total number of tasks
      */
     public void showAdd(Task t, int newCount) {
+        assert t != null; // caller should ensure non-null
         line();
         showMessage("Got it. I've added this task:");
         showMessage("  " + t.getDescription());
@@ -122,6 +127,7 @@ public class Ui {
      * @param newCount the new total number of tasks
      */
     public void showDelete(Task t, int newCount) {
+        assert t != null; // caller should ensure non-null
         line();
         showMessage("Noted. I've removed this task:");
         showMessage("  " + t.getDescription());
@@ -134,6 +140,7 @@ public class Ui {
      * @param t the task that was marked
      */
     public void showMark(Task t) {
+        assert t != null; // caller should ensure non-null
         line();
         showMessage("Nice! I've marked this task as done:");
         showMessage("  " + t.getDescription());
@@ -145,6 +152,7 @@ public class Ui {
      * @param t the task that was unmarked
      */
     public void showUnmark(Task t) {
+        assert t != null; // caller should ensure non-null
         line();
         showMessage("OK, I've marked this task as not done yet:");
         showMessage("  " + t.getDescription());
@@ -156,6 +164,7 @@ public class Ui {
      * @param tasks the list of tasks to display
      */
     public void showFind(List<Task> tasks) {
+        assert tasks != null; // caller should ensure non-null
         line();
         showMessage("Here are the matching tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
