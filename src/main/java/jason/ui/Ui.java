@@ -157,9 +157,7 @@ public class Ui {
 
     /** Wrap content with top/bottom lines for consistent framing. */
     private void framed(Runnable body) {
-        line();
         body.run();
-        line();
     }
 
     /** How a task is displayed in lists/messages (centralized). */
