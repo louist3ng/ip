@@ -17,8 +17,14 @@ import java.util.List;
  * Main application class.
  */
 public class Jason {
+    // ===== Constants (avoid magic literals) =====
+    private static final String DATA_FILE = "data/jason.txt";
+    private static final String MSG_LOADED = "[Loaded %d tasks from disk]";
+    private static final String MSG_NUM_FORMAT = "☹ OOPS!!! The task number should be an integer.";
+    private static final String MSG_UNEXPECTED = "☹ OOPS!!! Something went wrong: ";
+
     private final Ui ui = new Ui();
-    private final Storage storage = new Storage("data/jason.txt");
+    private final Storage storage = new Storage(DATA_FILE);
     private final TaskList tasks = new TaskList();
 
     /**
@@ -29,7 +35,7 @@ public class Jason {
             List<Task> loaded = storage.load();
             loaded.forEach(tasks::add);
             if (!loaded.isEmpty()) {
-                ui.showMessage(String.format("[Loaded %d tasks from disk]", loaded.size()));
+                ui.showMessage(String.format(MSG_LOADED, loaded.size()));
             }
         } catch (IOException e) {
             ui.warn("Could not load tasks: " + e.getMessage());
@@ -54,9 +60,9 @@ public class Jason {
             } catch (EmptyException | OobIndexException | IncorrectInputException e) {
                 ui.showMessage(e.toString());
             } catch (NumberFormatException e) {
-                ui.showMessage("☹ OOPS!!! The task number should be an integer.");
+                ui.showMessage(MSG_NUM_FORMAT);
             } catch (Exception e) {
-                ui.showMessage("☹ OOPS!!! Something went wrong: " + e.getMessage());
+                ui.showMessage(MSG_UNEXPECTED + e.getMessage());
             }
         }
 
