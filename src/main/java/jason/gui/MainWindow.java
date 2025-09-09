@@ -13,12 +13,14 @@ import jason.model.Task;
 import jason.model.TaskList;
 import jason.storage.Storage;
 import jason.ui.GuiUi;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 /** Controller for MainWindow. */
 public class MainWindow {
@@ -62,8 +64,8 @@ public class MainWindow {
             List<Task> loaded = storage.load();
             loaded.forEach(tasks::add);
             if (!loaded.isEmpty()) {
-                ui.showMessage("[Loading " + loaded.size() 
-                        + " previously saved]");
+                ui.showMessage("[Loading " + loaded.size()
+                        + " previously saved tasks]");
             }
         } catch (IOException e) {
             appendJason("[WARN] Could not load tasks: " + e.getMessage());
@@ -89,8 +91,10 @@ public class MainWindow {
             command.execute(ui, tasks, storage); // all output routes via GuiUi -> appendJason
 
             if (command.isExit()) {
-                appendJason("Bye. Hope to see you again soon!");
-                Platform.exit();
+                //appendJason("Bye. Hope to see you again soon!");
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                delay.setOnFinished(event -> Platform.exit());
+                delay.play();
             }
         } catch (EmptyException | OobIndexException | IncorrectInputException e) {
             appendJason(e.getMessage());

@@ -100,7 +100,7 @@ public class TaskList {
      * @return A list of tasks that match the predicate.
      */
     public List<Task> find(Predicate<Task> p) {
-        return tasks.stream().filter(p).toList();
         assert p != null; // caller should ensure non-null
+        return tasks.stream().filter(p).toList();
     }
 }

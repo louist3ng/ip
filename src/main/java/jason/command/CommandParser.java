@@ -59,6 +59,9 @@ public final class CommandParser {
             case "find"     -> {
                 return parseFind(args);
             }
+            case "help"     -> {
+                return new HelpCommand(args);
+            }
             default         -> throw new IncorrectInputException();
         }
     }
