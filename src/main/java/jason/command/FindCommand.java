@@ -32,5 +32,6 @@ public class FindCommand extends Command {
                 .toLowerCase().contains(keyword.toLowerCase()));
         ui.showFind(found);
         // No save needed for read-only operation
+        assert tasks != null && ui != null && storage != null; // never null
     }
 }

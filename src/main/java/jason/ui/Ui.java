@@ -57,16 +57,19 @@ public class Ui {
 
     /** Prints a message to the standard output. */
     public void showMessage(String msg) {
+        assert msg != null; // caller should ensure non-null
         System.out.println(msg);
     }
 
     /** Prints an error message to the standard error output. */
     public void showError(String msg) {
-        System.err.println(PREFIX_ERROR + msg);
+        assert msg != null; // caller should ensure non-null
+         System.err.println(PREFIX_ERROR + msg);
     }
 
     /** Prints a warning message to the standard error output. */
     public void warn(String msg) {
+        assert msg != null; // caller should ensure non-null
         System.err.println(PREFIX_WARNING + msg);
     }
 
@@ -79,6 +82,7 @@ public class Ui {
 
     /** Displays the list of tasks. */
     public void showList(List<Task> tasks) {
+        assert tasks != null; // caller should ensure non-null
         framed(() -> {
             if (tasks == null || tasks.isEmpty()) {
                 showMessage(MSG_NO_TASKS);

@@ -22,6 +22,7 @@ public class Storage {
      */
     public Storage(String relativePath) {
         this.file = Paths.get(relativePath);
+        assert relativePath != null; // caller should ensure non-null
     }
 
     /**
@@ -29,6 +30,7 @@ public class Storage {
      * @throws IOException if an I/O error occurs
      */
     private void ensureDir() throws IOException {
+        assert file != null; // never null
         Path parent = file.getParent();
         if (parent != null) {
             Files.createDirectories(parent);
@@ -60,10 +62,13 @@ public class Storage {
      * @throws IOException if an I/O error occurs
      */
     public void save(ArrayList<Task> tasks) throws IOException {
+        assert tasks != null; // caller should ensure non-null
         ensureDir();
         Path tmp = file.resolveSibling(file.getFileName() + ".tmp");
+        assert !tmp.equals(file); // temp file should be different
         try (BufferedWriter bw = Files.newBufferedWriter(tmp)) {
             for (Task t : tasks) {
+                assert t != null; // tasks list should not contain null
                 bw.write(t.toStorageString());
                 bw.newLine();
             }
