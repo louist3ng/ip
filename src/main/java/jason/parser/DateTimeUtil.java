@@ -21,6 +21,7 @@ public final class DateTimeUtil {
 
     /**
      * Parses an ISO 8601 date or date-time string.
+     * 
      * @param s the input string
      * @return the parsed LocalDateTime
      */
@@ -42,58 +43,56 @@ public final class DateTimeUtil {
 
     /**
      * Parses a date-time string in the format dd/MM/yy HH:mm or MM/dd/yy HH:mm.
-     * @param input the input string
+     * 
+     * @param input     the input string
      * @param preferDmy true to prefer dd/MM/yy, false to prefer MM/dd/yy
      * @return the parsed LocalDateTime
      */
     public static LocalDateTime parseDayMonthYearWithTime(String input, boolean preferDmy) {
-        assert input != null; // caller should ensure non-null
+        assert input != null;
         String s = input.trim();
         String[] parts = s.split("\\s+", 2);
         if (parts.length != 2) {
-            throw new DateTimeParseException("Expected date time", s, 0);
+            throw new DateTimeParseException("Expected <date> <time>", s, 0);
         }
 
+        // split date
         String[] dateParts = parts[0].split("[/-]");
         if (dateParts.length != 3) {
             throw new DateTimeParseException("Expected dd/MM/yy or MM/dd/yy", s, 0);
         }
+
         int a = Integer.parseInt(dateParts[0]);
         int b = Integer.parseInt(dateParts[1]);
         int year = Integer.parseInt(dateParts[2]);
         if (year < 100) {
-            year += 2000; // normalize two‑digit years
+            year += 2000; // normalize two-digit years
         }
-        int day;
-        int month;
 
+        // decide day/month
+        int day, month;
         if (a > 12 && b <= 12) {
             day = a;
             month = b;
         } else if (b > 12 && a <= 12) {
             day = b;
             month = a;
+        } else if (preferDmy) {
+            day = a;
+            month = b;
         } else {
-            if (preferDmy) {
-                day = a;
-                month = b;
-            } else {
-                day = b;
-                month = a;
-            }
+            day = b;
+            month = a;
         }
-
-        assert month >= 1 && month <= 12;
-        assert day >= 1 && day <= 31;
-        // Note: LocalDate.of() will throw DateTimeException if day is invalid for month
 
         LocalDate d = LocalDate.of(year, month, day);
         LocalTime t = LocalTime.parse(parts[1], DateTimeFormatter.ofPattern("H:mm"));
-        return LocalDateTime.of(d, t);
+        return d.atTime(t);
     }
 
     /**
      * Parses a time string in the format HH:mm.
+     * 
      * @param hm the input string
      * @return the parsed LocalTime
      */
@@ -104,6 +103,7 @@ public final class DateTimeUtil {
 
     /**
      * Formats a LocalDateTime object into a human-readable string.
+     * 
      * @param ldt the LocalDateTime to format
      * @return the formatted string
      */
@@ -117,6 +117,7 @@ public final class DateTimeUtil {
 
     /**
      * Formats a LocalDateTime object into an ISO 8601 string.
+     * 
      * @param ldt the LocalDateTime to format
      * @return the formatted string
      */
@@ -126,7 +127,9 @@ public final class DateTimeUtil {
     }
 
     /**
-     * Formats a LocalDateTime object into an ISO 8601 string with a space between date and time.
+     * Formats a LocalDateTime object into an ISO 8601 string with a space between
+     * date and time.
+     * 
      * @param ldt the LocalDateTime to format
      * @return the formatted string
      */
@@ -138,6 +141,7 @@ public final class DateTimeUtil {
 
     /**
      * Parses an ISO 8601 date-only string.
+     * 
      * @param s the input string
      * @return the parsed LocalDate
      */
@@ -146,9 +150,12 @@ public final class DateTimeUtil {
         return LocalDate.parse(s.trim(), DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
-    /**
-     * Best‑effort parser for legacy human strings in files. Falls back to now if
-     * failed.
+   /**
+     * Tries to parse a date-time string in either ISO 8601 format or
+     * dd/MM/yy[yy] HH:mm or MM/dd/yy[yy] HH:mm format.
+     * 
+     * @param s the input string
+     * @return the parsed LocalDateTime, or the current date-time if parsing fails
      */
     public static LocalDateTime tryParseLoose(String s) {
         assert s != null; // caller should ensure non-null
