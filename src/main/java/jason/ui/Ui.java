@@ -64,7 +64,7 @@ public class Ui {
     /** Prints an error message to the standard error output. */
     public void showError(String msg) {
         assert msg != null; // caller should ensure non-null
-         System.err.println(PREFIX_ERROR + msg);
+        System.err.println(PREFIX_ERROR + msg);
     }
 
     /** Prints a warning message to the standard error output. */
@@ -170,7 +170,9 @@ public class Ui {
     private String renderIndexedList(List<Task> tasks) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < tasks.size(); i++) {
-            if (i > 0) sb.append(System.lineSeparator());
+            if (i > 0) {
+                sb.append(System.lineSeparator());
+            }
             sb.append(i + 1).append(". ").append(describe(tasks.get(i)));
         }
         return sb.toString();
