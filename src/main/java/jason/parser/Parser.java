@@ -7,13 +7,13 @@ import jason.model.Task;
 import jason.model.Todo;
 import java.time.LocalDateTime;
 
-
 /**
  * Parser class to handle user input and storage string parsing.
  */
 public class Parser {
     /**
      * Parses a task from a storage string.
+     * 
      * @param line the storage string
      * @return the parsed Task
      */
@@ -25,31 +25,17 @@ public class Parser {
 
         String type = p[0].trim();
         boolean done = "1".equals(p[1].trim());
-        String desc = p[2];
+        String desc = p[2].trim();
 
+        Task task;
         switch (type) {
-            case "T" -> {
-                Todo t = new Todo(desc);
-                if (done) {
-                    t.mark();
-                } else {
-                    t.unmark();
-                }
-                return t;
-            }
+            case "T" -> task = new Todo(desc);
             case "D" -> {
                 if (p.length < 4) {
                     throw new ParseException("Bad D line: " + line);
                 }
                 LocalDateTime by = DateTimeUtil.parseIsoDateOrDateTime(p[3]);
-                assert by != null; // parseIsoDateOrDateTime never returns null
-                var d = new Deadline(desc, by);
-                if (done) {
-                    d.mark();
-                } else {
-                    d.unmark();
-                }
-                return d;
+                task = new Deadline(desc, by);
             }
             case "E" -> {
                 if (p.length < 5) {
@@ -57,17 +43,16 @@ public class Parser {
                 }
                 LocalDateTime from = DateTimeUtil.parseIsoDateOrDateTime(p[3]);
                 LocalDateTime to = DateTimeUtil.parseIsoDateOrDateTime(p[4]);
-                assert from != null && to != null; 
-                // parseIsoDateOrDateTime never returns null
-                var e = new Event(desc, from, to);
-                if (done) {
-                    e.mark();
-                } else {
-                    e.unmark();
-                }
-                return e;
+                task = new Event(desc, from, to);
             }
             default -> throw new ParseException("Unknown type: " + type);
         }
+
+        if (done) {
+            task.mark();
+        } else {
+            task.unmark();
+        }
+        return task;
     }
 }
