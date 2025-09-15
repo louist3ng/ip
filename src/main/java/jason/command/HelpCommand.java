@@ -51,7 +51,7 @@ public class HelpCommand extends Command {
     static {
         // Keep order stable with LinkedHashMap.
         HELP.put("list", new HelpEntry(
-                "Show all tasks.",
+                "Show all tasks. Obviously",
                 new String[]{
                         "list"
                 }
@@ -106,7 +106,7 @@ public class HelpCommand extends Command {
                 }
         ));
         HELP.put("bye", new HelpEntry(
-                "Exit the application.",
+                "Ends the session (not that I’ll miss you).",
                 new String[]{
                         "bye"
                 }
@@ -116,8 +116,9 @@ public class HelpCommand extends Command {
     private String allHelpText() {
         StringBuilder sb = new StringBuilder();
         sb.append("─".repeat(34)).append("\n");
-        sb.append("How to use Jason :)\n\n");
-        sb.append("Type `help <command>` for details on a single command.\n");
+        sb.append("Hmph… since you clearly need me, here’s how to use me:\n\n");
+        sb.append("If you’re still lost, type help command for details on just one command.\n"  
+                        + "B-but don’t expect me to explain everything forever!.\n");
         sb.append("─".repeat(34)).append("\n\n");
 
         for (Map.Entry<String, HelpEntry> e : HELP.entrySet()) {
@@ -138,9 +139,9 @@ public class HelpCommand extends Command {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("─".repeat(50)).append("\n");
+        sb.append("─".repeat(35)).append("\n");
         sb.append("Help: ").append(topic).append("\n");
-        sb.append("─".repeat(50)).append("\n");
+        sb.append("─".repeat(35)).append("\n");
         sb.append(entry.description).append("\n\n");
         sb.append("Examples:\n");
         for (String ex : entry.examples) {

@@ -5,6 +5,6 @@ package jason.exception;
  */
 public class EmptyException extends ParentException {
     public EmptyException() {
-        super("No such command exists!");
+        super("Say what you mean for the command. I can’t read minds… yet");
     }
 }   

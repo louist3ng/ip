@@ -1,5 +1,6 @@
 package jason.gui;
 
+// no javax.script.Bindings import!
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -13,12 +14,17 @@ import javafx.scene.shape.Circle;
 
 /**
  * A dialog box consisting of an ImageView to represent the speaker's face and a
- * label
- * containing text from the speaker.
+ * label containing text from the speaker.
  */
 public class DialogBox extends HBox {
     private static final double AVATAR_SIZE = 40.0;
-    private static final double MAX_BUBBLE_WIDTH = 400.0;
+
+    // If the window (scene) is at least this wide, we consider it "fullscreen/wide"
+    private static final double FULL_WIDTH_THRESHOLD = 900.0;
+
+    // In fullscreen/wide mode, wrap bubbles to this max width (or available width
+    // if smaller)
+    private static final double MAX_BUBBLE_WIDTH_WIDE = 680.0;
 
     private final Label text = new Label();
     private final ImageView avatar = new ImageView();
@@ -26,10 +32,35 @@ public class DialogBox extends HBox {
     private DialogBox(String message, Image img) {
         // text bubble
         text.setText(message);
-        text.setWrapText(true);
-        HBox.setHgrow(text, Priority.NEVER);
-        text.setMinWidth(Region.USE_PREF_SIZE);
-        text.setMaxWidth(MAX_BUBBLE_WIDTH);
+        HBox.setHgrow(text, Priority.ALWAYS);
+        text.setMinWidth(0); // allow shrinking
+        text.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        text.setMaxWidth(Double.MAX_VALUE);
+
+        // Decide behavior based on the *window* size (scene width)
+        sceneProperty().addListener((obs, oldScene, scene) -> {
+            if (scene == null)
+                return;
+
+            var isWide = scene.widthProperty().greaterThanOrEqualTo(FULL_WIDTH_THRESHOLD);
+
+            // Always allow wrapping (especially in narrow mode)
+            text.setWrapText(true);
+
+            var available = widthProperty()
+                    .subtract(AVATAR_SIZE) // avatar
+                    .subtract(getSpacing()) // gap
+                    .subtract(24); // padding + safety
+
+            text.maxWidthProperty().bind(
+                    javafx.beans.binding.Bindings.when(isWide)
+                            .then(
+                                    javafx.beans.binding.Bindings.min(
+                                            MAX_BUBBLE_WIDTH_WIDE, // cap when wide
+                                            available))
+                            .otherwise(available) // in narrow mode: use full width
+            );
+        });
 
         // circular avatar
         avatar.setImage(img);

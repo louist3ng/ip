@@ -14,7 +14,7 @@ public class Ui {
     private static final String PREFIX_WARNING = "WARNING: ";
 
     private static final String MSG_HELLO = "Hello, my name is Jason";
-    private static final String MSG_BYE = "Bye. Hope to see you again soon!";
+    private static final String MSG_BYE = "Tch… leaving so soon? Not that I care or anything. See you… I guess";
     private static final String MSG_NO_TASKS = "No tasks yet";
     private static final String MSG_LIST_MATCHING = "Here are the matching tasks in your list:";
     private static final String MSG_FIND_EMPTY = "No matching tasks found.";
