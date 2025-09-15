@@ -98,7 +98,7 @@ public class MainWindow {
             command.execute(ui, tasks, storage); // all output routes via GuiUi -> appendJason
 
             if (command.isExit()) {
-                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+                PauseTransition delay = new PauseTransition(Duration.seconds(1));
                 delay.setOnFinished(event -> Platform.exit());
                 delay.play();
             }
