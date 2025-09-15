@@ -11,13 +11,13 @@ import org.junit.jupiter.api.Test;
 
 class DateTimeUtilTest {
 
-class TaskListTest {
+    class TaskListTest {
 
-    @Test
-    void parseIsoDate_onlyDate_ok() {
-        LocalDateTime ldt = DateTimeUtil.parseIsoDateOrDateTime("2025-09-04");
-        assertEquals(LocalDateTime.of(2025, 9, 4, 0, 0), ldt);
-    }
+        @Test
+        void parseIsoDate_onlyDate_ok() {
+            LocalDateTime ldt = DateTimeUtil.parseIsoDateOrDateTime("2025-09-04");
+            assertEquals(LocalDateTime.of(2025, 9, 4, 0, 0), ldt);
+        }
     }
 
     @Test
