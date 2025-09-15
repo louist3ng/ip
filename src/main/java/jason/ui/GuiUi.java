@@ -39,12 +39,12 @@ public class GuiUi extends Ui {
 
     @Override
     public void showError(String msg) {
-        out("ERROR: " + msg);
+        out(">_< " + msg);
     }
 
     @Override
     public void warn(String msg) {
-        out("WARNING: " + msg);
+        out("-_- " + msg);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class GuiUi extends Ui {
     @Override
     public void showList(List<Task> tasks) {
         if (tasks == null || tasks.isEmpty()) {
-            out("No tasks yet");
+            out("There’s nothing here… n-not that I’m disappointed or anything");
         } else {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < tasks.size(); i++) {
@@ -69,7 +69,8 @@ public class GuiUi extends Ui {
     @Override
     public void showAdd(Task t, int newCount) {
         String message = String.format(
-                "Got it. I've added this task:\n  %s\nNow you have %d tasks in the list.",
+                "Ugh, fine. I added this todo:\n  %s\nNow you have %d tasks in the list."
+                        + "\n(You better get to work!)",
                 t.getDescription(),
                 newCount);
         out(message); // print once
@@ -78,7 +79,7 @@ public class GuiUi extends Ui {
     @Override
     public void showDelete(Task t, int newCount) {
         String message = String.format(
-                "Noted. I've removed this task:\n  %s\nNow you have %d tasks in the list.",
+                "Fine, I removed\n  %s\nYou have %d left. Don't slack off now!",
                 t.getDescription(),
                 newCount);
         out(message);
@@ -87,7 +88,8 @@ public class GuiUi extends Ui {
     @Override
     public void showMark(Task t) {
         String message = String.format(
-                "Nice! I've marked this task as done:\n  %s",
+                "Huh? You actually finished:\n  %s"
+                        + "\nW-well… good job, I guess",
                 t.getDescription());
         out(message);
     }
@@ -95,7 +97,7 @@ public class GuiUi extends Ui {
     @Override
     public void showUnmark(Task t) {
         String message = String.format(
-                "OK, I've marked this task as not done yet:\n  %s",
+                "I’ve set:\n  %s\nas not done. Don’t make this a habit",
                 t.getDescription());
         out(message);
     }
@@ -103,7 +105,7 @@ public class GuiUi extends Ui {
     @Override
     public void showFind(List<Task> tasks) {
         StringBuilder sb = new StringBuilder();
-        sb.append("Here are the matching tasks in your list:\n");
+        sb.append("These matched. Be grateful I even looked:\n");
 
         if (tasks != null && !tasks.isEmpty()) {
             for (int i = 0; i < tasks.size(); i++) {
@@ -111,7 +113,7 @@ public class GuiUi extends Ui {
                 sb.append(String.format("%d. %s%n", i + 1, t.getDescription()));
             }
         } else {
-            sb.append("No matching tasks found.");
+            sb.append("I couldn’t find anything. Maybe try a smarter keyword… baka");
         }
 
         out(sb.toString().trim()); // single output → one chat bubble
@@ -132,9 +134,4 @@ public class GuiUi extends Ui {
         showError("Disk error: " + message);
     }
 
-    /*
-     * ---------- input / lifecycle ----------
-     * For GUI mode we don't read from Scanner or close it here;
-     * those are handled by MainWindow. No override needed.
-     */
 }

@@ -5,7 +5,7 @@ package jason.exception;
  */
 public class IncorrectInputException extends ParentException {
     public IncorrectInputException() {
-        super("No such command exists. Try again");
+        super("What was that supposed to be? Try help before embarrassing us both");
     }
 
 }

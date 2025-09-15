@@ -71,14 +71,16 @@ public class MainWindow {
             List<Task> loaded = storage.load();
             loaded.forEach(tasks::add);
             if (!loaded.isEmpty()) {
-                ui.showMessage("[Loading " + loaded.size() + " previously saved tasks]");
+                ui.showMessage("I loaded " + loaded.size() 
+                        + " tasks. Don't expect me to celebrate your laziness.");
             }
         } catch (IOException e) {
-            appendJason("[WARN] Could not load tasks: " + e.getMessage());
+            appendJason("Ugh, saving failed. Fix this " + e.getMessage());
         }
 
         // Intro
-        appendJason("Good morning sir, my name is Jason.");
+        appendJason("Hmph… back already? Don’t get the wrong idea—I’m only here to keep you on track. " +
+                "Now, what do you want me to do?");
     }
 
     @FXML
@@ -103,7 +105,7 @@ public class MainWindow {
         } catch (EmptyException | OobIndexException | IncorrectInputException e) {
             appendJasonError("☹ " + e.getMessage());
         } catch (NumberFormatException e) {
-            appendJasonError("☹ OOPS!!! The task number should be an integer.");
+            appendJasonError("Tch, do you even know what a number looks like? Try again properly");
         } catch (Exception e) {
             appendJasonError(e.getMessage() == null ? "[Unexpected error]" : e.getMessage());
             e.printStackTrace();
