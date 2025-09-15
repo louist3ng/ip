@@ -8,10 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Shows in-app guidance and examples for available commands.
- * Usage:
- *   help            -> shows all commands
- *   help <command>  -> shows details for a single command (e.g., "help find")
+ * Command to display help information.
  */
 public class HelpCommand extends Command {
     private final String topic; // may be null/empty
@@ -50,6 +47,7 @@ public class HelpCommand extends Command {
     /* ---------- Help content ---------- */
 
     private static final Map<String, HelpEntry> HELP = new LinkedHashMap<>();
+
     static {
         // Keep order stable with LinkedHashMap.
         HELP.put("list", new HelpEntry(
@@ -135,7 +133,9 @@ public class HelpCommand extends Command {
 
     private String oneTopicHelp(String topic) {
         HelpEntry entry = HELP.get(topic);
-        if (entry == null) return null;
+        if (entry == null) {
+            return null;
+        }
 
         StringBuilder sb = new StringBuilder();
         sb.append("─".repeat(50)).append("\n");
@@ -152,6 +152,7 @@ public class HelpCommand extends Command {
     private static class HelpEntry {
         final String description;
         final String[] examples;
+
         HelpEntry(String description, String[] examples) {
             this.description = description;
             this.examples = examples;

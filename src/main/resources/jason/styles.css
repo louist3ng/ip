@@ -2,10 +2,10 @@
 .root {
     -fx-font-family: "Segoe UI", "San Francisco", "Helvetica Neue", Arial, sans-serif;
     -fx-font-size: 15px;
-    -fx-background-color: #eaeef2;         /* Telegram-like chat background */
-    -fx-accent: #3390ec;                   /* Telegram blue */
-    -fx-focus-color: #3390ec;
-    -fx-faint-focus-color: rgba(51,144,236,0.2);
+    -fx-background-image: url("/images/wallpaper.png");
+    -fx-background-repeat: stretch;   /* or repeat / no-repeat */
+    -fx-background-position: center center;
+    -fx-background-size: cover;       /* fill window, keep ratio */
 }
 
 /* ========== Chat Area ========== */
@@ -41,9 +41,20 @@
 }
 
 .bubble-bot {
-    -fx-background-color: white;            /* white bubble for bot */
+    -fx-background-color: rgb(154, 246, 168);            /* white bubble for bot */
     -fx-alignment: CENTER_LEFT;
 }
+
+/* Error bubble variant */
+.bubble-bot.bubble-error {
+    -fx-background-color: #ffecec;
+    -fx-border-color: #e02424;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 12;
+    -fx-text-fill: #a10000; /* will win */
+    -fx-font-weight: 700;
+}
+
 
 /* ========== Input Bar (Telegram style) ========== */
 .text-field {

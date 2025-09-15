@@ -17,7 +17,9 @@ public class MainApp extends Application {
         Scene scene = new Scene(new FXMLLoader(fxml).load());
         stage.setTitle("Jason");
         stage.setScene(scene);
+        stage.setResizable(true);
         stage.show();
+        new Zoom().install(scene);
     }
 
     public static void main(String[] args) {

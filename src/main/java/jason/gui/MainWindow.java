@@ -59,13 +59,19 @@ public class MainWindow {
         // Auto-scroll to bottom as content grows
         dialogContainer.heightProperty().addListener((obs, o, n) -> scrollPane.setVvalue(1.0));
 
+        // Ensure dialogContainer width tracks scrollPane viewport width
+        scrollPane.viewportBoundsProperty().addListener((obs, oldB, newB) -> {
+            dialogContainer.setPrefWidth(newB.getWidth());
+        });
+        // Initialize once in case listener fires later
+        dialogContainer.setPrefWidth(scrollPane.getViewportBounds().getWidth());
+
         // Load tasks
         try {
             List<Task> loaded = storage.load();
             loaded.forEach(tasks::add);
             if (!loaded.isEmpty()) {
-                ui.showMessage("[Loading " + loaded.size()
-                        + " previously saved tasks]");
+                ui.showMessage("[Loading " + loaded.size() + " previously saved tasks]");
             }
         } catch (IOException e) {
             appendJason("[WARN] Could not load tasks: " + e.getMessage());
@@ -82,8 +88,7 @@ public class MainWindow {
             return;
         }
 
-        dialogContainer.getChildren().add(DialogBox.user(text, userImage));
-        scrollPane.setVvalue(1.0);
+        addDialog(DialogBox.user(text, userImage));
         userInput.clear();
 
         try {
@@ -91,23 +96,34 @@ public class MainWindow {
             command.execute(ui, tasks, storage); // all output routes via GuiUi -> appendJason
 
             if (command.isExit()) {
-                //appendJason("Bye. Hope to see you again soon!");
                 PauseTransition delay = new PauseTransition(Duration.seconds(2));
                 delay.setOnFinished(event -> Platform.exit());
                 delay.play();
             }
         } catch (EmptyException | OobIndexException | IncorrectInputException e) {
-            appendJason(e.getMessage());
+            appendJasonError("☹ " + e.getMessage());
         } catch (NumberFormatException e) {
-            appendJason("☹ OOPS!!! The task number should be an integer.");
+            appendJasonError("☹ OOPS!!! The task number should be an integer.");
         } catch (Exception e) {
-            appendJason("[ERROR] " + e.getMessage());
+            appendJasonError(e.getMessage() == null ? "[Unexpected error]" : e.getMessage());
             e.printStackTrace();
         }
     }
 
+    // Append a message from Jason to the dialog container
     private void appendJason(String msg) {
-        dialogContainer.getChildren().add(DialogBox.jason(msg, jasonImage));
+        addDialog(DialogBox.jason(msg, jasonImage));
+    }
+
+    // Append an error message from Jason to the dialog container
+    private void appendJasonError(String msg) {
+        addDialog(DialogBox.error(msg, jasonImage));
+    }
+
+    /** Ensures each DialogBox row stretches/reflows with the container width. */
+    private void addDialog(DialogBox db) {
+        db.prefWidthProperty().bind(dialogContainer.widthProperty());
+        dialogContainer.getChildren().add(db);
         scrollPane.setVvalue(1.0);
     }
 }
